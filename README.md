@@ -1,2 +1,2 @@
-# medicPHR1
+# medicPHR
 Personal health record
