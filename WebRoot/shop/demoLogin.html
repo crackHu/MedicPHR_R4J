@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="utf-8" />
+	<meta name="author" content="wenyejie" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-touch-fullscreen" content="no">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<title>登录中</title>
+	<link rel="stylesheet" media="all" href="css/loading.css" />
+	<link rel="stylesheet" media="all" href="css/base.css" />
+	<link rel="stylesheet" media="all" href="css/common.css" />
+	<link rel="stylesheet" media="all" href="css/cont.css" />
+	<link rel="stylesheet" media="all" href="css/medicCommon.css" />
+	<link rel="stylesheet" media="all" href="css/login.css" />	
+ 
+  </head>
+  
+  <body>
+  <div class="main">
+
+                <!-- 个人中心 < -->
+                <section class="person">
+                    <div class="person-img">
+                        <div class="attestation center">
+                            <div>
+                                  <img class="person-head" src="upload/person.jpg">  
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="person-info">
+                        <h1 id="hname"></h1>
+                        <h2 id="hphone"></h2>
+                        <!-- <h2 id="hpay"></h2> -->
+                    </div>
+                    <div class="person-exit" ">
+                        <div class="center">
+						  <input id="sao" class="btn-default jsExit" type="button" value="扫码">
+						  <input id="huihua" class="btn-default jsExit" type="button" value="会话">
+					  </div>
+						
+                    </div>
+                     	<input id="Popup" class="btn-default jsExit" type="button" value="单选窗"> 
+					  <input id="Map" class="btn-default jsExit" type="button" value="定位"> 
+                </section>
+				 
+
+    </div>
+    <script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+	<script type="text/javascript" src="js/dingtalk.js"></script>
+	<script type="text/javascript" src="js/ddCommon.js"></script>
+	<script type="text/javascript" src="js/ba-api.js"></script>
+	<script type="text/javascript" src="js/ddLogin.js?v=123123"></script>
+	    <script type="text/javascript">
+	   init();
+	   function init(){
+	  
+	    alert("ID="+getCookie("userId")+"; 名称="+getCookie("name")+"; 头像="+getCookie("avatar"));
+		  
+        if(!getCookie("userId") ||   !getCookie("name") || !getCookie("avatar")){
+                      alert("重新开始拿取参数。");
+					  getUserId () ;
+                   
+		  }else{
+			  $("#hname").html("名称：" +getCookie("name"))
+			  $("#hphone").html("ID ：" +getCookie("userId"))
+			  $(".person-head").attr("src", getCookie("avatar"));
+			}
+			$("#sao").click(saoma);
+	        $("#huihua").click(huihua);
+			$("#Popup").click(Popup);
+	        $("#Map").click(Map);
+			
+	   }
+
+	  function saoma(){
+          
+            dd.biz.util.scan({
+              type: String,//type为qrCode或者barCode
+              onSuccess: function(data) {
+				  //onSuccess将在扫码成功之后回调
+				  /* data结构
+					{ 'text': String}
+                 */
+				 alert("扫马数据:"+data.text);
+               },
+			  onFail : function(err) {
+			  }
+            })
+	  }
+	  function Map(){
+	 /* dd.biz.map.locate({
+      onSuccess: function (result) {
+        alert(result.province+result.city+result.adName+result.snippet)
+		 dd.biz.map.view({
+			latitude: result.latitude, // 纬度
+			longitude: result.longitude, // 经度
+			title: result.title // 地址/POI名称
+		});
+       },
+      onFail: function (err) {
+      }
+    });*/
+	dd.device.geolocation.get({
+    targetAccuracy : 200,
+    coordinate : 1,
+    onSuccess : function(result) {
+        /* 高德坐标 result 结构
+        {
+            longitude : Number,
+            latitude : Number,
+            accuracy : Number,
+            address : String,
+            province : String,
+            city : String,
+            district : String,
+            road : String,
+            netType : String,
+            operatorType : String,
+            errorMessage : String,
+            errorCode : Number,
+            isWifiEnabled : Boolean,
+            isGpsEnabled : Boolean,
+            isFromMock : Boolean,
+            provider : wifi|lbs|gps,
+            accuracy : Number,
+            isMobileEnabled : Boolean
+        }
+        */
+		 alert(result.province+result.city+result.district+result.road)
+	 
+		 dd.biz.map.view({
+			latitude: result.latitude, // 纬度
+			longitude: result.longitude, // 经度
+			title: result.title // 地址/POI名称
+		});
+    },
+    onFail : function(err) {}
+});
+	}
+
+	  function huihua(){
+	  
+        dd.biz.chat.pickConversation({
+			corpId: ddw.corpid, //企业id
+			isConfirm:'true', //是否弹出确认窗口，默认为true
+			onSuccess : function() {
+			     alert("完成会话窗口调用")
+				//onSuccess将在选择结束之后调用
+				// 该cid和服务端开发文档-普通会话消息接口配合使用，而且只能使用一次，之后将失效
+			 
+		   },
+           onFail : function() {}
+           })
+	  }
+	   function Popup(){
+	 
+		dd.device.notification.actionSheet({
+		    title: "谁是最棒哒？", //标题
+		    cancelButton: '取消', //取消按钮文本
+		    otherButtons: ["孙悟空","猪八戒","唐僧","沙和尚"],
+		    onSuccess : function(result) {
+		        //onSuccess将在点击button之后回调
+		        /*{
+		            buttonIndex: 0 //被点击按钮的索引值，Number，从0开始, 取消按钮为-1
+		        }*/
+				if ( result.buttonIndex != -1)
+		    	    alert("您选择了第"+ (result.buttonIndex+1) +"个");
+				else
+                    alert("取消选择");
+		    },
+		    onFail : function(err) {}
+		});
+	}
+
+	
+	</script>
+  </body>
+
+
+</html>

@@ -1,0 +1,864 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+/*
+ * Author : wenyejie
+ * Mail : wenyejie@foxmail
+ * Link : http://wenyejie.com/
+ */
+
+@-webkit-viewport   { width: device-width; }
+@-moz-viewport      { width: device-width; }
+@-ms-viewport       { width: device-width; }
+@-o-viewport        { width: device-width; }
+@viewport           { width: device-width; }
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+}
+ol, ul, fieldset {
+    margin: 0;
+    padding: 0;
+}
+dialog {
+    padding: 0;
+}
+legend {
+    padding-right: 0;
+    padding-left: 0;
+}
+menu {
+    padding-left: 0;
+}
+body, blockquote, figure {
+    margin: 0;
+}
+html, body {
+    min-height: 100%;
+    height: 100%;
+}
+p, h1, h2, h3, h4, h5, h6, dl, pre, hr, menu {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+dd {
+    margin-left: 0;
+}
+em {
+    font-style: normal;
+}
+textarea {
+    vertical-align: bottom;
+    resize: none; /* 禁止用户变更textarea的大小 */
+}
+a, input, textarea, select {
+    outline: none;
+}
+b {
+    font-weight: normal;
+}
+i {
+    font-style: normal;
+}
+html {
+    font-size: 100%;
+    -webkit-appearance: none;
+    -ms-text-size-adjust: 100%;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+td {
+    padding: 0;
+}
+ul, ol {
+    list-style: none;
+}
+label {
+    line-height: inherit;
+}
+input {
+    vertical-align: middle;
+}
+label > input[type="checkbox"], label > input[type="radio"] {
+    margin-top: -0.185em;
+    margin-right: 0.3em;
+    margin-left: 0.3em;
+}
+input[type="button"], input[type="submit"], input[type="reset"], input[type="radio"], input[type="checkbox"], input[type="image"], button, label, select {
+    cursor: pointer;
+}
+[disabled] {
+    cursor: not-allowed;
+    pointer-events: none;
+}
+button, input, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+    margin: 0;
+    padding: 0;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal;
+}
+article, aside, details, figcaption, figure, footer, header, nav, section, summary {
+    display: block;
+}
+audio, canvas, video {
+    display: inline-block;
+    max-width: 100%;
+}
+input[type="hidden"] {
+    display: none;
+}
+img {
+    border: none;
+    max-width: 100%;
+    max-height: 100%;
+    -ms-interpolation-mode: bicubic;
+}
+iframe {
+    /* scrolling="no" 不显示滚动条 */
+    border: none;
+}
+
+@media print {
+    p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+    }
+}
+.clearfix:before, .clearfix:after {
+    content: "";
+    display: table;
+}
+.clearfix:after {
+    clear: both;
+    overflow: hidden;
+}
+ul.clearfix > li, ol.clearfix > li {
+    float: left;
+}
+.dn {
+    display: none;
+}
+.db {
+    display: block;
+}
+.dib {
+    display: inline-block;
+}
+.fl {
+    float: left;
+}
+.fr {
+    float: right;
+}
+.pr {
+    position: relative;
+}
+.pa {
+    position: absolute;
+}
+.pf {
+    position: fixed;
+}
+.tac {
+    text-align: center;
+}
+.tar {
+    text-align: right;
+}
+.tal {
+    text-align: left;
+}
+.tdu {
+    text-decoration: underline;
+}
+.ti2 {
+    text-indent: 2em;
+}
+.fwb {
+    font-weight: bold;
+}
+.fsi {
+    font-style: italic;
+}
+.oh {
+    overflow: hidden;
+}
+.oys {
+    overflow-y: scroll;
+}
+.oxs {
+    overflow-x: scroll;
+}
+.vam {
+    vertical-align: middle;
+}
+.vat {
+    vertical-align: top;
+}
+.ma {
+    margin-left: auto;
+    margin-right: auto;
+}
+.triangle {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent;
+}
+.zero {
+    font-size: 0;
+    line-height: 0;
+}
+.t0 {
+    top: 0;
+}
+.b0 {
+    bottom: 0;
+}
+.r0 {
+    right: 0;
+}
+.l0 {
+    left: 0;
+}
+.cp {
+    cursor: pointer;
+}
+.cd {
+    cursor: default;
+}
+
+/* center < */
+.center { /* 当父元素绝对定位是居中失效 */
+    vertical-align: middle;
+    display: table-cell;
+}
+.center > :first-child {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}
+/* center > */
+
+.ellipsis {
+    white-space: nowrap;
+    word-wrap: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+.noSelect { /* 禁止用户选择 */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* font-family { */
+.ffm {font-family: "Microsoft YaHei", "微软雅黑"} /* 微软雅黑 */
+.ffs {font-family: SimSun, "宋体"} /* 宋体 */
+.ffa {font-family: Arial}
+/* font-family } */
+
+/* margin-top { */
+.mt1 {margin-top: .01rem}
+.mt2 {margin-top: .02rem}
+.mt3 {margin-top: .03rem}
+.mt4 {margin-top: .04rem}
+.mt5 {margin-top: .05rem}
+.mt6 {margin-top: .06rem}
+.mt7 {margin-top: .07rem}
+.mt8 {margin-top: .08rem}
+.mt9 {margin-top: .09rem}
+.mt10 {margin-top: .10rem}
+.mt11 {margin-top: .11rem}
+.mt12 {margin-top: .12rem}
+.mt13 {margin-top: .13rem}
+.mt14 {margin-top: .14rem}
+.mt15 {margin-top: .15rem}
+.mt16 {margin-top: .16rem}
+.mt17 {margin-top: .17rem}
+.mt18 {margin-top: .18rem}
+.mt19 {margin-top: .19rem}
+.mt20 {margin-top: .20rem}
+.mt21 {margin-top: .21rem}
+.mt22 {margin-top: .22rem}
+.mt23 {margin-top: .23rem}
+.mt24 {margin-top: .24rem}
+.mt25 {margin-top: .25rem}
+.mt26 {margin-top: .26rem}
+.mt27 {margin-top: .27rem}
+.mt28 {margin-top: .28rem}
+.mt29 {margin-top: .29rem}
+.mt30 {margin-top: .30rem}
+.mt31 {margin-top: .31rem}
+.mt32 {margin-top: .32rem}
+.mt33 {margin-top: .33rem}
+.mt34 {margin-top: .34rem}
+.mt35 {margin-top: .35rem}
+.mt36 {margin-top: .36rem}
+.mt37 {margin-top: .37rem}
+.mt38 {margin-top: .38rem}
+.mt39 {margin-top: .39rem}
+.mt40 {margin-top: .40rem}
+.mt41 {margin-top: .41rem}
+.mt42 {margin-top: .42rem}
+.mt43 {margin-top: .43rem}
+.mt44 {margin-top: .44rem}
+.mt45 {margin-top: .45rem}
+.mt46 {margin-top: .46rem}
+.mt47 {margin-top: .47rem}
+.mt48 {margin-top: .48rem}
+.mt49 {margin-top: .49rem}
+.mt50 {margin-top: .50rem}
+/* margin-top } */
+
+/* margin-right { */
+.mr1 {margin-right: .01rem}
+.mr2 {margin-right: .02rem}
+.mr3 {margin-right: .03rem}
+.mr4 {margin-right: .04rem}
+.mr5 {margin-right: .05rem}
+.mr6 {margin-right: .06rem}
+.mr7 {margin-right: .07rem}
+.mr8 {margin-right: .08rem}
+.mr9 {margin-right: .09rem}
+.mr10 {margin-right: .10rem}
+.mr11 {margin-right: .11rem}
+.mr12 {margin-right: .12rem}
+.mr13 {margin-right: .13rem}
+.mr14 {margin-right: .14rem}
+.mr15 {margin-right: .15rem}
+.mr16 {margin-right: .16rem}
+.mr17 {margin-right: .17rem}
+.mr18 {margin-right: .18rem}
+.mr19 {margin-right: .19rem}
+.mr20 {margin-right: .20rem}
+.mr21 {margin-right: .21rem}
+.mr22 {margin-right: .22rem}
+.mr23 {margin-right: .23rem}
+.mr24 {margin-right: .24rem}
+.mr25 {margin-right: .25rem}
+.mr26 {margin-right: .26rem}
+.mr27 {margin-right: .27rem}
+.mr28 {margin-right: .28rem}
+.mr29 {margin-right: .29rem}
+.mr30 {margin-right: .30rem}
+.mr31 {margin-right: .31rem}
+.mr32 {margin-right: .32rem}
+.mr33 {margin-right: .33rem}
+.mr34 {margin-right: .34rem}
+.mr35 {margin-right: .35rem}
+.mr36 {margin-right: .36rem}
+.mr37 {margin-right: .37rem}
+.mr38 {margin-right: .38rem}
+.mr39 {margin-right: .39rem}
+.mr40 {margin-right: .40rem}
+.mr41 {margin-right: .41rem}
+.mr42 {margin-right: .42rem}
+.mr43 {margin-right: .43rem}
+.mr44 {margin-right: .44rem}
+.mr45 {margin-right: .45rem}
+.mr46 {margin-right: .46rem}
+.mr47 {margin-right: .47rem}
+.mr48 {margin-right: .48rem}
+.mr49 {margin-right: .49rem}
+.mr50 {margin-right: .50rem}
+/* margin-right } */
+
+/* margin-bottom { */
+.mb1 {margin-bottom: .01rem}
+.mb2 {margin-bottom: .02rem}
+.mb3 {margin-bottom: .03rem}
+.mb4 {margin-bottom: .04rem}
+.mb5 {margin-bottom: .05rem}
+.mb6 {margin-bottom: .06rem}
+.mb7 {margin-bottom: .07rem}
+.mb8 {margin-bottom: .08rem}
+.mb9 {margin-bottom: .09rem}
+.mb10 {margin-bottom: .10rem}
+.mb11 {margin-bottom: .11rem}
+.mb12 {margin-bottom: .12rem}
+.mb13 {margin-bottom: .13rem}
+.mb14 {margin-bottom: .14rem}
+.mb15 {margin-bottom: .15rem}
+.mb16 {margin-bottom: .16rem}
+.mb17 {margin-bottom: .17rem}
+.mb18 {margin-bottom: .18rem}
+.mb19 {margin-bottom: .19rem}
+.mb20 {margin-bottom: .20rem}
+.mb21 {margin-bottom: .21rem}
+.mb22 {margin-bottom: .22rem}
+.mb23 {margin-bottom: .23rem}
+.mb24 {margin-bottom: .24rem}
+.mb25 {margin-bottom: .25rem}
+.mb26 {margin-bottom: .26rem}
+.mb27 {margin-bottom: .27rem}
+.mb28 {margin-bottom: .28rem}
+.mb29 {margin-bottom: .29rem}
+.mb30 {margin-bottom: .30rem}
+.mb31 {margin-bottom: .31rem}
+.mb32 {margin-bottom: .32rem}
+.mb33 {margin-bottom: .33rem}
+.mb34 {margin-bottom: .34rem}
+.mb35 {margin-bottom: .35rem}
+.mb36 {margin-bottom: .36rem}
+.mb37 {margin-bottom: .37rem}
+.mb38 {margin-bottom: .38rem}
+.mb39 {margin-bottom: .39rem}
+.mb40 {margin-bottom: .40rem}
+.mb41 {margin-bottom: .41rem}
+.mb42 {margin-bottom: .42rem}
+.mb43 {margin-bottom: .43rem}
+.mb44 {margin-bottom: .44rem}
+.mb45 {margin-bottom: .45rem}
+.mb46 {margin-bottom: .46rem}
+.mb47 {margin-bottom: .47rem}
+.mb48 {margin-bottom: .48rem}
+.mb49 {margin-bottom: .49rem}
+.mb50 {margin-bottom: .50rem}
+/* margin-bottom } */
+
+/* margin-left { */
+.ml1 {margin-left: .01rem}
+.ml2 {margin-left: .02rem}
+.ml3 {margin-left: .03rem}
+.ml4 {margin-left: .04rem}
+.ml5 {margin-left: .05rem}
+.ml6 {margin-left: .06rem}
+.ml7 {margin-left: .07rem}
+.ml8 {margin-left: .08rem}
+.ml9 {margin-left: .09rem}
+.ml10 {margin-left: .10rem}
+.ml11 {margin-left: .11rem}
+.ml12 {margin-left: .12rem}
+.ml13 {margin-left: .13rem}
+.ml14 {margin-left: .14rem}
+.ml15 {margin-left: .15rem}
+.ml16 {margin-left: .16rem}
+.ml17 {margin-left: .17rem}
+.ml18 {margin-left: .18rem}
+.ml19 {margin-left: .19rem}
+.ml20 {margin-left: .20rem}
+.ml21 {margin-left: .21rem}
+.ml22 {margin-left: .22rem}
+.ml23 {margin-left: .23rem}
+.ml24 {margin-left: .24rem}
+.ml25 {margin-left: .25rem}
+.ml26 {margin-left: .26rem}
+.ml27 {margin-left: .27rem}
+.ml28 {margin-left: .28rem}
+.ml29 {margin-left: .29rem}
+.ml30 {margin-left: .30rem}
+.ml31 {margin-left: .31rem}
+.ml32 {margin-left: .32rem}
+.ml33 {margin-left: .33rem}
+.ml34 {margin-left: .34rem}
+.ml35 {margin-left: .35rem}
+.ml36 {margin-left: .36rem}
+.ml37 {margin-left: .37rem}
+.ml38 {margin-left: .38rem}
+.ml39 {margin-left: .39rem}
+.ml40 {margin-left: .40rem}
+.ml41 {margin-left: .41rem}
+.ml42 {margin-left: .42rem}
+.ml43 {margin-left: .43rem}
+.ml44 {margin-left: .44rem}
+.ml45 {margin-left: .45rem}
+.ml46 {margin-left: .46rem}
+.ml47 {margin-left: .47rem}
+.ml48 {margin-left: .48rem}
+.ml49 {margin-left: .49rem}
+.ml50 {margin-left: .50rem}
+/* margin-left } */
+
+/* padding-top { */
+.pt1 {padding-top: .01rem}
+.pt2 {padding-top: .02rem}
+.pt3 {padding-top: .03rem}
+.pt4 {padding-top: .04rem}
+.pt5 {padding-top: .05rem}
+.pt6 {padding-top: .06rem}
+.pt7 {padding-top: .07rem}
+.pt8 {padding-top: .08rem}
+.pt9 {padding-top: .09rem}
+.pt10 {padding-top: .10rem}
+.pt11 {padding-top: .11rem}
+.pt12 {padding-top: .12rem}
+.pt13 {padding-top: .13rem}
+.pt14 {padding-top: .14rem}
+.pt15 {padding-top: .15rem}
+.pt16 {padding-top: .16rem}
+.pt17 {padding-top: .17rem}
+.pt18 {padding-top: .18rem}
+.pt19 {padding-top: .19rem}
+.pt20 {padding-top: .20rem}
+.pt21 {padding-top: .21rem}
+.pt22 {padding-top: .22rem}
+.pt23 {padding-top: .23rem}
+.pt24 {padding-top: .24rem}
+.pt25 {padding-top: .25rem}
+.pt26 {padding-top: .26rem}
+.pt27 {padding-top: .27rem}
+.pt28 {padding-top: .28rem}
+.pt29 {padding-top: .29rem}
+.pt30 {padding-top: .30rem}
+.pt31 {padding-top: .31rem}
+.pt32 {padding-top: .32rem}
+.pt33 {padding-top: .33rem}
+.pt34 {padding-top: .34rem}
+.pt35 {padding-top: .35rem}
+.pt36 {padding-top: .36rem}
+.pt37 {padding-top: .37rem}
+.pt38 {padding-top: .38rem}
+.pt39 {padding-top: .39rem}
+.pt40 {padding-top: .40rem}
+.pt41 {padding-top: .41rem}
+.pt42 {padding-top: .42rem}
+.pt43 {padding-top: .43rem}
+.pt44 {padding-top: .44rem}
+.pt45 {padding-top: .45rem}
+.pt46 {padding-top: .46rem}
+.pt47 {padding-top: .47rem}
+.pt48 {padding-top: .48rem}
+.pt49 {padding-top: .49rem}
+.pt50 {padding-top: .50rem}
+/* padding-top } */
+
+/* padding-right { */
+.pr1 {padding-right: .01rem}
+.pr2 {padding-right: .02rem}
+.pr3 {padding-right: .03rem}
+.pr4 {padding-right: .04rem}
+.pr5 {padding-right: .05rem}
+.pr6 {padding-right: .06rem}
+.pr7 {padding-right: .07rem}
+.pr8 {padding-right: .08rem}
+.pr9 {padding-right: .09rem}
+.pr10 {padding-right: .10rem}
+.pr11 {padding-right: .11rem}
+.pr12 {padding-right: .12rem}
+.pr13 {padding-right: .13rem}
+.pr14 {padding-right: .14rem}
+.pr15 {padding-right: .15rem}
+.pr16 {padding-right: .16rem}
+.pr17 {padding-right: .17rem}
+.pr18 {padding-right: .18rem}
+.pr19 {padding-right: .19rem}
+.pr20 {padding-right: .20rem}
+.pr21 {padding-right: .21rem}
+.pr22 {padding-right: .22rem}
+.pr23 {padding-right: .23rem}
+.pr24 {padding-right: .24rem}
+.pr25 {padding-right: .25rem}
+.pr26 {padding-right: .26rem}
+.pr27 {padding-right: .27rem}
+.pr28 {padding-right: .28rem}
+.pr29 {padding-right: .29rem}
+.pr30 {padding-right: .30rem}
+.pr31 {padding-right: .31rem}
+.pr32 {padding-right: .32rem}
+.pr33 {padding-right: .33rem}
+.pr34 {padding-right: .34rem}
+.pr35 {padding-right: .35rem}
+.pr36 {padding-right: .36rem}
+.pr37 {padding-right: .37rem}
+.pr38 {padding-right: .38rem}
+.pr39 {padding-right: .39rem}
+.pr40 {padding-right: .40rem}
+.pr41 {padding-right: .41rem}
+.pr42 {padding-right: .42rem}
+.pr43 {padding-right: .43rem}
+.pr44 {padding-right: .44rem}
+.pr45 {padding-right: .45rem}
+.pr46 {padding-right: .46rem}
+.pr47 {padding-right: .47rem}
+.pr48 {padding-right: .48rem}
+.pr49 {padding-right: .49rem}
+.pr50 {padding-right: .50rem}
+/* padding-right } */
+
+/* padding-bottom { */
+.pb1 {padding-bottom: .01rem}
+.pb2 {padding-bottom: .02rem}
+.pb3 {padding-bottom: .03rem}
+.pb4 {padding-bottom: .04rem}
+.pb5 {padding-bottom: .05rem}
+.pb6 {padding-bottom: .06rem}
+.pb7 {padding-bottom: .07rem}
+.pb8 {padding-bottom: .08rem}
+.pb9 {padding-bottom: .09rem}
+.pb10 {padding-bottom: .10rem}
+.pb11 {padding-bottom: .11rem}
+.pb12 {padding-bottom: .12rem}
+.pb13 {padding-bottom: .13rem}
+.pb14 {padding-bottom: .14rem}
+.pb15 {padding-bottom: .15rem}
+.pb16 {padding-bottom: .16rem}
+.pb17 {padding-bottom: .17rem}
+.pb18 {padding-bottom: .18rem}
+.pb19 {padding-bottom: .19rem}
+.pb20 {padding-bottom: .20rem}
+.pb21 {padding-bottom: .21rem}
+.pb22 {padding-bottom: .22rem}
+.pb23 {padding-bottom: .23rem}
+.pb24 {padding-bottom: .24rem}
+.pb25 {padding-bottom: .25rem}
+.pb26 {padding-bottom: .26rem}
+.pb27 {padding-bottom: .27rem}
+.pb28 {padding-bottom: .28rem}
+.pb29 {padding-bottom: .29rem}
+.pb30 {padding-bottom: .30rem}
+.pb31 {padding-bottom: .31rem}
+.pb32 {padding-bottom: .32rem}
+.pb33 {padding-bottom: .33rem}
+.pb34 {padding-bottom: .34rem}
+.pb35 {padding-bottom: .35rem}
+.pb36 {padding-bottom: .36rem}
+.pb37 {padding-bottom: .37rem}
+.pb38 {padding-bottom: .38rem}
+.pb39 {padding-bottom: .39rem}
+.pb40 {padding-bottom: .40rem}
+.pb41 {padding-bottom: .41rem}
+.pb42 {padding-bottom: .42rem}
+.pb43 {padding-bottom: .43rem}
+.pb44 {padding-bottom: .44rem}
+.pb45 {padding-bottom: .45rem}
+.pb46 {padding-bottom: .46rem}
+.pb47 {padding-bottom: .47rem}
+.pb48 {padding-bottom: .48rem}
+.pb49 {padding-bottom: .49rem}
+.pb50 {padding-bottom: .50rem}
+/* padding-bottom } */
+
+/* padding-left { */
+.pl1 {padding-left: .01rem}
+.pl2 {padding-left: .02rem}
+.pl3 {padding-left: .03rem}
+.pl4 {padding-left: .04rem}
+.pl5 {padding-left: .05rem}
+.pl6 {padding-left: .06rem}
+.pl7 {padding-left: .07rem}
+.pl8 {padding-left: .08rem}
+.pl9 {padding-left: .09rem}
+.pl10 {padding-left: .10rem}
+.pl11 {padding-left: .11rem}
+.pl12 {padding-left: .12rem}
+.pl13 {padding-left: .13rem}
+.pl14 {padding-left: .14rem}
+.pl15 {padding-left: .15rem}
+.pl16 {padding-left: .16rem}
+.pl17 {padding-left: .17rem}
+.pl18 {padding-left: .18rem}
+.pl19 {padding-left: .19rem}
+.pl20 {padding-left: .20rem}
+.pl21 {padding-left: .21rem}
+.pl22 {padding-left: .22rem}
+.pl23 {padding-left: .23rem}
+.pl24 {padding-left: .24rem}
+.pl25 {padding-left: .25rem}
+.pl26 {padding-left: .26rem}
+.pl27 {padding-left: .27rem}
+.pl28 {padding-left: .28rem}
+.pl29 {padding-left: .29rem}
+.pl30 {padding-left: .30rem}
+.pl31 {padding-left: .31rem}
+.pl32 {padding-left: .32rem}
+.pl33 {padding-left: .33rem}
+.pl34 {padding-left: .34rem}
+.pl35 {padding-left: .35rem}
+.pl36 {padding-left: .36rem}
+.pl37 {padding-left: .37rem}
+.pl38 {padding-left: .38rem}
+.pl39 {padding-left: .39rem}
+.pl40 {padding-left: .40rem}
+.pl41 {padding-left: .41rem}
+.pl42 {padding-left: .42rem}
+.pl43 {padding-left: .43rem}
+.pl44 {padding-left: .44rem}
+.pl45 {padding-left: .45rem}
+.pl46 {padding-left: .46rem}
+.pl47 {padding-left: .47rem}
+.pl48 {padding-left: .48rem}
+.pl49 {padding-left: .49rem}
+.pl50 {padding-left: .50rem}
+/* padding-left } */
+
+/* font-size { */
+.fz10 {font-size: .10rem}
+.fz11 {font-size: .11rem}
+.fz12 {font-size: .12rem}
+.fz13 {font-size: .13rem}
+.fz14 {font-size: .14rem}
+.fz15 {font-size: .15rem}
+.fz16 {font-size: .16rem}
+.fz17 {font-size: .17rem}
+.fz18 {font-size: .18rem}
+.fz19 {font-size: .19rem}
+.fz20 {font-size: .20rem}
+.fz21 {font-size: .21rem}
+.fz22 {font-size: .22rem}
+.fz23 {font-size: .23rem}
+.fz24 {font-size: .24rem}
+.fz25 {font-size: .25rem}
+.fz26 {font-size: .26rem}
+.fz27 {font-size: .27rem}
+.fz28 {font-size: .28rem}
+.fz29 {font-size: .29rem}
+.fz30 {font-size: .30rem}
+.fz31 {font-size: .31rem}
+.fz32 {font-size: .32rem}
+.fz33 {font-size: .33rem}
+.fz34 {font-size: .34rem}
+.fz35 {font-size: .35rem}
+.fz36 {font-size: .36rem}
+.fz37 {font-size: .37rem}
+.fz38 {font-size: .38rem}
+.fz39 {font-size: .39rem}
+.fz40 {font-size: .40rem}
+.fz41 {font-size: .41rem}
+.fz42 {font-size: .42rem}
+.fz43 {font-size: .43rem}
+.fz44 {font-size: .44rem}
+.fz45 {font-size: .45rem}
+.fz46 {font-size: .46rem}
+.fz47 {font-size: .47rem}
+.fz48 {font-size: .48rem}
+.fz49 {font-size: .49rem}
+.fz50 {font-size: .50rem}
+/* font-size } */
+
+/* line-height { */
+.lh10 {line-height: .10rem}
+.lh11 {line-height: .11rem}
+.lh12 {line-height: .12rem}
+.lh13 {line-height: .13rem}
+.lh14 {line-height: .14rem}
+.lh15 {line-height: .15rem}
+.lh16 {line-height: .16rem}
+.lh17 {line-height: .17rem}
+.lh18 {line-height: .18rem}
+.lh19 {line-height: .19rem}
+.lh20 {line-height: .20rem}
+.lh21 {line-height: .21rem}
+.lh22 {line-height: .22rem}
+.lh23 {line-height: .23rem}
+.lh24 {line-height: .24rem}
+.lh25 {line-height: .25rem}
+.lh26 {line-height: .26rem}
+.lh27 {line-height: .27rem}
+.lh28 {line-height: .28rem}
+.lh29 {line-height: .29rem}
+.lh30 {line-height: .30rem}
+.lh31 {line-height: .31rem}
+.lh32 {line-height: .32rem}
+.lh33 {line-height: .33rem}
+.lh34 {line-height: .34rem}
+.lh35 {line-height: .35rem}
+.lh36 {line-height: .36rem}
+.lh37 {line-height: .37rem}
+.lh38 {line-height: .38rem}
+.lh39 {line-height: .39rem}
+.lh40 {line-height: .40rem}
+.lh41 {line-height: .41rem}
+.lh42 {line-height: .42rem}
+.lh43 {line-height: .43rem}
+.lh44 {line-height: .44rem}
+.lh45 {line-height: .45rem}
+.lh46 {line-height: .46rem}
+.lh47 {line-height: .47rem}
+.lh48 {line-height: .48rem}
+.lh49 {line-height: .49rem}
+.lh50 {line-height: .50rem}
+/* line-height } */
+
+/* width < */
+.w0{width:0}.w1{width:1%}.w2{width:2%}.w3{width:3%}.w4{width:4%}.w5{width:5%}.w6{width:6%}.w7{width:7%}.w8{width:8%}.w9{width:9%}.w10{width:10%}.w11{width:11%}.w12{width:12%}.w13{width:13%}.w14{width:14%}.w15{width:15%}.w16{width:16%}.w17{width:17%}.w18{width:18%}.w19{width:19%}.w20{width:20%}.w21{width:21%}.w22{width:22%}.w23{width:23%}.w24{width:24%}.w25{width:25%}.w26{width:26%}.w27{width:27%}.w28{width:28%}.w29{width:29%}.w30{width:30%}.w31{width:31%}.w32{width:32%}.w33{width:33%}.w34{width:34%}.w35{width:35%}.w36{width:36%}.w37{width:37%}.w38{width:38%}.w39{width:39%}.w40{width:40%}.w41{width:41%}.w42{width:42%}.w43{width:43%}.w44{width:44%}.w45{width:45%}.w46{width:46%}.w47{width:47%}.w48{width:48%}.w49{width:49%}.w50{width:50%}.w51{width:51%}.w52{width:52%}.w53{width:53%}.w54{width:54%}.w55{width:55%}.w56{width:56%}.w57{width:57%}.w58{width:58%}.w59{width:59%}.w60{width:60%}.w61{width:61%}.w62{width:62%}.w63{width:63%}.w64{width:64%}.w65{width:65%}.w66{width:66%}.w67{width:67%}.w68{width:68%}.w69{width:69%}.w70{width:70%}.w71{width:71%}.w72{width:72%}.w73{width:73%}.w74{width:74%}.w75{width:75%}.w76{width:76%}.w77{width:77%}.w78{width:78%}.w79{width:79%}.w80{width:80%}.w81{width:81%}.w82{width:82%}.w83{width:83%}.w84{width:84%}.w85{width:85%}.w86{width:86%}.w87{width:87%}.w88{width:88%}.w89{width:89%}.w90{width:90%}.w91{width:91%}.w92{width:92%}.w93{width:93%}.w94{width:94%}.w95{width:95%}.w96{width:96%}.w97{width:97%}.w98{width:98%}.w99{width:99%}.w100{width:100%}
+/* width > */
+
+/* height < */
+.h0{height:0}.h1{height:1%}.h2{height:2%}.h3{height:3%}.h4{height:4%}.h5{height:5%}.h6{height:6%}.h7{height:7%}.h8{height:8%}.h9{height:9%}.h10{height:10%}.h11{height:11%}.h12{height:12%}.h13{height:13%}.h14{height:14%}.h15{height:15%}.h16{height:16%}.h17{height:17%}.h18{height:18%}.h19{height:19%}.h20{height:20%}.h21{height:21%}.h22{height:22%}.h23{height:23%}.h24{height:24%}.h25{height:25%}.h26{height:26%}.h27{height:27%}.h28{height:28%}.h29{height:29%}.h30{height:30%}.h31{height:31%}.h32{height:32%}.h33{height:33%}.h34{height:34%}.h35{height:35%}.h36{height:36%}.h37{height:37%}.h38{height:38%}.h39{height:39%}.h40{height:40%}.h41{height:41%}.h42{height:42%}.h43{height:43%}.h44{height:44%}.h45{height:45%}.h46{height:46%}.h47{height:47%}.h48{height:48%}.h49{height:49%}.h50{height:50%}.h51{height:51%}.h52{height:52%}.h53{height:53%}.h54{height:54%}.h55{height:55%}.h56{height:56%}.h57{height:57%}.h58{height:58%}.h59{height:59%}.h60{height:60%}.h61{height:61%}.h62{height:62%}.h63{height:63%}.h64{height:64%}.h65{height:65%}.h66{height:66%}.h67{height:67%}.h68{height:68%}.h69{height:69%}.h70{height:70%}.h71{height:71%}.h72{height:72%}.h73{height:73%}.h74{height:74%}.h75{height:75%}.h76{height:76%}.h77{height:77%}.h78{height:78%}.h79{height:79%}.h80{height:80%}.h81{height:81%}.h82{height:82%}.h83{height:83%}.h84{height:84%}.h85{height:85%}.h86{height:86%}.h87{height:87%}.h88{height:88%}.h89{height:89%}.h90{height:90%}.h91{height:91%}.h92{height:92%}.h93{height:93%}.h94{height:94%}.h95{height:95%}.h96{height:96%}.h97{height:97%}.h98{height:98%}.h99{height:99%}.h100{height:100%}
+/* height > */
+
+/* media 基准 640 */
+@media only screen and (max-width:320px){
+    html {
+        font-size: 312.5%;
+    }
+}
+
+@media only screen and (max-width:360px) and (min-width:320px) {
+    html {
+        font-size: 312.5%;
+    }
+}
+
+@media only screen and (max-width:360px) and (min-width:350px) {
+    html {
+        font-size: 341.796875%;
+    }
+}
+
+@media only screen and (max-width:480px) and (min-width:360px) {
+    html {
+        font-size: 351.5625%;
+    }
+}
+
+@media only screen and (max-width:480px) and (min-width:470px) {
+    html {
+        font-size: 458.984375%;
+    }
+}
+
+@media only screen and (max-width:560px) and (min-width:480px) {
+    html {
+        font-size: 468.75%;
+    }
+}
+
+@media only screen and (max-width:570px) and (min-width:560px) {
+    html {
+        font-size: 546.875%;
+    }
+}
+
+@media only screen and (max-width:640px) and (min-width:570px) {
+    html {
+        font-size: 556.640625%;
+    }
+}
+
+@media only screen and (max-width:640px) and (min-width:630px) {
+    html {
+        font-size: 615.234375%;
+    }
+}
+
+@media only screen and (max-width:710px) and (min-width:640px) {
+    html {
+        font-size: 625%;
+    }
+}
+@media only screen and (min-width:710px){
+    html {
+        font-size: 693.359375%;
+    }
+}
+.img-box {max-width: 100%;max-height: 100%;position: relative;left: 50%; width: 100%;margin-left: -50%;
+border: 1px solid #f5f5f5;}
+.img-box:before{content:'\20';padding-top:100%;display: block;}
+.img-box img{max-width: 100%;max-height:100%;position:absolute;top:0;left:0;}

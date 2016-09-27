@@ -1,0 +1,164 @@
+﻿<!doctype html>
+<!--
+  - Author : wenyejie
+  - Mail : wenyejie@foxmail.com
+  - Link : http://wenyejie.com/
+ -->
+<head>
+<meta charset="utf-8" />
+<meta name="author" content="wenyejie" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport"
+	content="width=device-width,maximum-scale=1.3,user-scalable=no,minimal-ui">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-touch-fullscreen" content="no">
+<meta name="apple-mobile-web-app-status-bar-style"
+	content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>支付宝支付案例</title>
+<link rel="stylesheet" media="all" href="css/base.css" />
+<link rel="stylesheet" media="all" href="css/common.css" />
+</head>
+
+<body>
+
+	<!-- 外围包裹元素 < -->
+	<div class="wrapper">
+
+		<!-- 头部 < -->
+		<header class="header clearfix">
+			 
+			<div class="header-center">
+				<h1>支付中心</h1>
+			</div>
+			 
+
+			<!-- 全部分类 < -->
+			<div class="classify-wrap">
+				<ul class="link-list"></ul>
+			</div>
+			<!-- 全部分类 > -->
+
+			<!-- 搜索 < -->
+		<!-- 	<div class="search clearfix">
+				<a class="search-close" href="javascript:;"><img
+					src="img/close-icon.png"></a>
+				<div>
+					<input class="search-text" type="text" placeholder="请输入要搜索商品关键字">
+					<span><a href="javascript:;" class="center"><img
+							src="img/search-btn.png"></a></span>
+				</div>
+			</div> -->
+			<!-- 搜索 > -->
+
+		</header>
+		<!-- 头部 > -->
+
+		<!-- 主要内容 < -->
+		<div class="main">
+
+			<div class="content">
+				<div class="tac bc-f mt10 pt25 bb-d">
+					<p class="fz32 lh1 mb22">支付案例页面</p>
+					<p class="fz24 ca lh1 mb35">只是一个案例！！！</p>
+				</div>
+				<div class="success-table" style="margin-bottom: 2rem;margin-top: 0.5rem;">
+					<table class="fz28 lh38">
+						<tr>
+							<td>订 单 号：</td>
+							<td class="order_sn">我是自动生成的,看不见我！</td>
+						</tr>
+					    <tr>
+							<td>总 金 额：</td>
+							<td class="fz36 c-primary"><i class="ffm">￥</i><i
+								class="orderAmount">0.02</i></td>
+						</tr>
+					</table>
+				</div>
+			 
+			</div>
+      
+		  <div class="content">
+				<form name="alipayment" id="alipayment" action="http://172.16.1.219:8080/vds5s1/alipay/alipayapi.jsp" method="post"
+					target="_blank">
+					<input type="hidden" class="WIDout_trade_no1"
+						name="WIDout_trade_no1" value="wx201671914364824933" /> <input type="hidden"
+						class="WIDout_trade_no" name="WIDout_trade_no" value="2016719143555850"
+						style="display: none;" /> <input type="hidden"
+						class="WIDtotal_fee" name="WIDtotal_fee" value="0.02" /> <input
+						type="hidden" class="WIDsubject" name="WIDsubject" value="支付宝支付" /> <input
+						type="submit" class="btn-primary w100 mt35 payBtn" value="支付宝支付">
+			<!-- 	<input type="submit" class="btn-primary w100 mt35 weixinPay dn"
+					value="支付宝支付"> -->
+				</form>  
+		<!-- 主要内容 > -->
+
+		<!-- 尾部 < -->
+		<div class="footer-height"></div>
+		<footer class="footer">想付就付版本所有</footer>
+		<!-- 尾部 > -->
+
+		<!-- 遮罩 < -->
+		<div class="body-shade"></div>
+		<!-- 遮罩 > -->
+
+	</div>
+	<!-- 外围包裹元素 > -->
+
+	<!-- 错误提示 < -->
+<!-- 	<div class="popUpBox alert-wrap danger-wrap">
+		<div class="popUpBoxYes">
+			<img class="success-icon" src="img/tips_ico.png">
+			<p class="alert-txt"></p>
+		</div>
+	</div> -->
+	<!-- 错误提示 > -->
+
+	<!-- 成功提示 < -->
+	<!-- <div class="popUpBox alert-wrap success-wrap">
+		<div class="popUpBoxYes">
+			<img class="success-icon" src="img/successIcon.png">
+			<p class="alert-txt"></p>
+		</div>
+	</div> -->
+	<!-- 成功提示 > -->
+
+	<!-- 警告提示 < -->
+	<div class="popUpBox warning-wrap">
+		<p class="alert-txt"></p>
+		<div>
+			<input class="btn-gray popUpBoxNo" type="button" value="取 消">
+			<input class="btn-primary-small popUpBoxYes ml30" type="button"
+				value="确 定">
+		</div>
+	</div>
+	<!-- 警告提示 > -->
+
+	<script src="js/jquery-2.1.3.min.js"></script>
+	<script src="js/common.js"></script>
+	<script src="js/swipe.js"></script>
+	<script>
+ 
+            // 初始化 
+            $( init );
+            var myDate = new Date();
+            var time = ''+myDate.getFullYear()+myDate.getMonth()+myDate.getDate()+myDate.getHours()+myDate.getMinutes()+myDate.getSeconds()+myDate.getMilliseconds();
+           
+            // 初始化 
+            function init () {
+                var myDate = new Date();
+                time = ""+myDate.getFullYear()+myDate.getMonth()+myDate.getDate()+myDate.getHours()+myDate.getMinutes()+myDate.getSeconds()+myDate.getMilliseconds();
+           	    $(".WIDout_trade_no").val(time);
+                $(".order_sn ").html(time);
+                var money = Math.random().toFixed(2);
+                 $(".WIDtotal_fee").val("0.01");
+                $(".orderAmount ").html("0.01");
+            }
+ 
+
+   
+        </script>
+
+</body>
+</html>
