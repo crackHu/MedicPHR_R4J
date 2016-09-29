@@ -15,36 +15,6 @@ public class VdsResponse extends Basetuple implements Serializable{
 	public class Dout implements Serializable{
 		Status status;
 		List<Object> dout;
-		Integer oneTotal ;
-		Integer twoTotal;
-
-		public Integer getOneTotal() {
-			return oneTotal;
-		}
-
-
-
-
-		public void setOneTotal(Integer oneTotal) {
-			this.oneTotal = oneTotal;
-		}
-
-
-
-
-		public Integer getTwoTotal() {
-			return twoTotal;
-		}
-
-
-
-
-		public void setTwoTotal(Integer twoTotal) {
-			this.twoTotal = twoTotal;
-		}
-
-
-
 
 		public Dout(){
 			status=new Status();

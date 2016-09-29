@@ -6,7 +6,11 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.UUID;
 
 import ba.util.Bo_vds_log4jUtil;
 
@@ -50,8 +54,10 @@ public class JsonData {
 									"yyyy-MM-dd");
 							json.put(temp, s.format(result.getDate(temp)));
 						}
+					}else{				
+						json.put(temp, result.getString(temp));
 					}
-				}
+				}	
 				list.add(json);
 				log4.log.info(" list-=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + list);
 			} else {
@@ -101,6 +107,8 @@ public class JsonData {
 									"yyyy-MM-dd");
 							json.put(temp, s.format(result.getDate(temp)));
 						}
+					}else{				
+						json.put(temp, result.getString(temp));
 					}
 				}
 				list.add(json);
@@ -111,5 +119,90 @@ public class JsonData {
 		log4.log.info(" list-=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + list);
 		return list;
 	}
+	
+	/**
+	 *   对 json 数据的处理 并且拼接成输入插入语句
+	 */
+	public String  dealListInsert(String tableName , JSONObject dataIn ){
+		
+		StringBuffer insert = new StringBuffer("insert into "+tableName+" ( ");
+		StringBuffer values = new StringBuffer("'");
+		Iterator it = dataIn.entrySet().iterator();
+		if( null == it ){
+			log4.log.info(" -=-=-=-=-=-=-=-=-=-=-=-insert dataIn 是空的 -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + insert + "     " + dataIn);
+			return null;
+		}else{
+			while(it.hasNext()){
+				Map.Entry m = (Entry) it.next();
+				String key = (String) m.getKey();
+				String value = (String) m.getValue();
+				insert.append(key + ",");
+				values.append(value + "','");
+			}
+			//insert.deleteCharAt(insert.length() - 1);
+			insert.append(" id) values(");
+			log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-values  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + values);
+			//String val = values.substring(0, values.length() - 2);
+			String id = UUID.randomUUID().toString();
+			values.append(id + "' " );
+			insert.append(values);
+			insert.append(")");
+			log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-insert  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + insert);
+		}	
+		log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-insert  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + insert);		
+		return insert.toString();
+	}
+	
+	/**
+	 *   对 json 数据的处理 并且拼接成输入更新 语句
+	 */
+	public String dealListUpdate(String tableName , JSONObject dataIn , String id){
+		
+		StringBuffer update = new StringBuffer("update " + tableName + " set ");
+		if(null != id){
+			Iterator it = dataIn.entrySet().iterator();
+			if( null == it ){
+				log4.log.info(" -=-=-=-=-=-=-=-=-=-=-=-update dataIn 是空的 -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + update + "     " + dataIn);
+				return null;
+			}else{
+				while(it.hasNext()){
+					Map.Entry m = (Entry) it.next();
+					String key = (String) m.getKey();
+					String value = (String) m.getValue();
+					if(!key.equals("id")){
+						update.append(key + " = '" + value + "' , ");
+					}		
+				}
+				update.deleteCharAt(update.length()-2);
+				update.append("where id = '" + id + "'");
+				log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-update  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + update);
+			}	
+		}
+		
+		log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-update  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + update);
+		return update.toString();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

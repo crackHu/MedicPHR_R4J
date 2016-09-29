@@ -113,11 +113,18 @@
 	<bean id="extUpload2" class="ba.util.upload2.ExtUpload">
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
-
-	<!-- 配置个人档案 -->
-	<bean id="boPersonDoc" class="pd.Bo_Vds_PersonDoc">
+	
+	<!-- 配置登录文件 -->
+	<bean id="boLogin" class="pd.Bo_Vds_Login">
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
+	
+	<!-- 配置个人档案   基本资料 -->
+	<bean id="boPersonDoc" class="pd.Bo_Vds_BoPersonDoc">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
+	
+	
 	<tx:annotation-driven />
 
 </beans>
