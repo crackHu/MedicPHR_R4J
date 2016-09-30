@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v12.08 (64 bit)
-MySQL - 5.6.19 : Database - phrv2
+MySQL - 5.7.15 : Database - phrv2
 *********************************************************************
 */
 
@@ -16,41 +16,57 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`phrv2` /*!40100 DEFAULT CHARACTER SET u
 
 USE `phrv2`;
 
-/* Procedure structure for procedure `procJbzlJWCMCSelect` */
+/* Procedure structure for procedure `procInsertData` */
 
-/*!50003 DROP PROCEDURE IF EXISTS  `procJbzlJWCMCSelect` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`root`@`%` PROCEDURE `procJbzlJWCMCSelect`(in jdzmc varchar(20))
-begin
-	SELECT  distinct grda_hkdz_jwcmc from phr_grda_jbzl where grda_hkdz_jdzmc = jdzmc and grda_hkdz_jwcmc!='';
-end */$$
-DELIMITER ;
-
-/* Procedure structure for procedure `procJbzlListSelect` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `procJbzlListSelect` */;
+/*!50003 DROP PROCEDURE IF EXISTS  `procInsertData` */;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`root`@`%` PROCEDURE `procJbzlListSelect`(in size int)
-begin 
-   select grbh , grda_xm , grda_xb , grda_csrq , grda_sfzhm , grda_hkdz_jdzmc , grda_hkdz_jwcmc , grda_hkdz_ljmc , grda_hklx , grda_brdh , grda_jtdh  
-			from phr_grda_jbzl group by grda_lrrq desc limit  0 , size ;
-end */$$
-DELIMITER ;
-
-/* Procedure structure for procedure `procJbzlLJMCSelect` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `procJbzlLJMCSelect` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`root`@`%` PROCEDURE `procJbzlLJMCSelect`(in jwcmc varchar(20))
-begin
-	SELECT  distinct grda_hkdz_ljmc from phr_grda_jbzl where grda_hkdz_jwcmc = jwcmc and grda_hkdz_ljmc!='';
-end */$$
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `procInsertData`(IN json text)
+BEGIN
+   /*
+     SET @json = '{"dataTable":"phr_grda_jbzl","data":{"grbh":"1114","grda_xm":"胡永刚","grda_csrq":"2016-12-30", "tjbj": 2}}';
+     {"dataTable":"phr_grda_jbzl","data":{"grbh":"1114","grda_xm":"胡永刚","grda_csrq":"2016-12-30","tjbj":2}}
+     CALL test(@json)
+   */
+   DECLARE i INT;
+   DECLARE keyStrUnQuote TEXT;
+   DECLARE valuesStr TEXT;
+   
+   SET @dataTable = JSON_UNQUOTE(JSON_EXTRACT(json, '$.dataTable'));
+   SET @data = JSON_EXTRACT(json, '$.data');
+   
+   SET @keysArr = JSON_KEYS(@data);
+   SET @keysArrLength = JSON_LENGTH(@data);
+   
+	SET i=0;
+	SET keyStrUnQuote = '';
+	SET valuesStr = '';
+	WHILE i<@keysArrLength DO
+	     SET @variable= CONCAT('$[',i,']');
+	     
+		SET @sql = 'set @temp_key = JSON_UNQUOTE(JSON_EXTRACT(?,?))';
+		PREPARE stmt FROM @sql;
+		EXECUTE stmt USING @keysArr, @variable;
+		
+	     SET @sql = 'set @temp_value = JSON_EXTRACT(?,CONCAT("$.",JSON_UNQUOTE(JSON_EXTRACT(?, ?))))';
+		PREPARE stmt FROM @sql ;
+		EXECUTE stmt USING @data, @keysArr, @variable;
+		
+		IF (i = @keysArrLength - 1) THEN
+			SET keyStrUnQuote = CONCAT(keyStrUnQuote,@temp_key);
+			SET valuesStr = CONCAT(valuesStr,@temp_value);
+		ELSE
+			SET keyStrUnQuote = CONCAT(keyStrUnQuote,CONCAT(@temp_key,","));
+			SET valuesStr = CONCAT(valuesStr,CONCAT(@temp_value,","));
+		END IF;
+		
+		SET i=i+1;
+	END WHILE;
+	SET @sql = CONCAT('insert into ',@dataTable,' (',keyStrUnQuote,') values (',valuesStr,')');
+	PREPARE stmt FROM @sql;
+	EXECUTE stmt;
+END */$$
 DELIMITER ;
 
 /* Procedure structure for procedure `procJBZLSelect` */
@@ -59,15 +75,20 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`root`@`%` PROCEDURE `procJBZLSelect`(IN pageNo INT, IN pageSize INT)
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `procJBZLSelect`(IN pageNo INT, IN pageSize INT)
 BEGIN
--- 查询档案列表
+  -- 查询档案列表
   IF(pageNo < 1) 
   THEN SET @start = 0 ;
   ELSE SET @start = (pageNo - 1) * pageSize ;
   END IF ;
-  SET @end = pageSize ;
-  SET @sql = 'SELECT * FROM phr_grda_jbzl limit ?,?' ;
+  
+  if(pageSize < 1) 
+  then set @end = 10 ;
+  else set @end = pageSize ;
+  end if ;
+  
+  SET @sql = 'SELECT * FROM phr_grda_jbzl order by grda_jdrq desc, grbh asc limit ?,?' ;
   PREPARE stmt FROM @sql ;
   EXECUTE stmt USING @start,
   @end ;
@@ -75,154 +96,79 @@ BEGIN
 END */$$
 DELIMITER ;
 
-/* Procedure structure for procedure `proGrdaGrbhSelect` */
+/* Procedure structure for procedure `procUpdateData` */
 
-/*!50003 DROP PROCEDURE IF EXISTS  `proGrdaGrbhSelect` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`root`@`%` PROCEDURE `proGrdaGrbhSelect`(in grbh varchar(50))
-begin 
-	set @grbh = grbh ;
-	SET @strSql1 = 'SELECT  * from phr_grda_jbzl where grbh in (';
-	set @strSql2 = ' )';
-	set @total = concat(@strSql1 , @grbh , @strSql2);
-	prepare strSql from @total;
-	execute strSql ;
-	deallocate prepare strSql ;
-end */$$
-DELIMITER ;
-
-/* Procedure structure for procedure `proGrdaJbzlSelect` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `proGrdaJbzlSelect` */;
+/*!50003 DROP PROCEDURE IF EXISTS  `procUpdateData` */;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`root`@`%` PROCEDURE `proGrdaJbzlSelect`(in grbh varchar(50) )
-begin 
-	#select j.id , j.grbh , j.grda_jtbh , j.grda_xm , j.grda_xb , j.grda_csrq  from  phr_grda_jbzl j where 
-	set @grbh = grbh ;
-	SET @strSql1 = 'select id , grbh , grda_jtbh , grda_xm , grda_xb , grda_csrq  from  phr_grda_jbzl j where grbh in (';
-	set @strSql2 = ' )';
-	set @total = concat(@strSql1 , @grbh , @strSql2);
-	prepare strSql from @total;
-	execute strSql ;
-	deallocate prepare strSql ;
-end */$$
-DELIMITER ;
-
-/* Procedure structure for procedure `proGrdaJwsSelect` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `proGrdaJwsSelect` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`root`@`%` PROCEDURE `proGrdaJwsSelect`(in grbh varchar(50) )
-begin 
-	#select j.id , j.grbh , j.grda_jtbh , j.grda_xm , j.grda_xb , j.grda_csrq  from  phr_grda_jbzl j where 
-	set @grbh = grbh ;
-	SET @strSql1 = 'select id , grbh , lb , jbmc , qzne from phr_grda_jws where grbh in (';
-	set @strSql2 = ' )';
-	set @total = concat(@strSql1 , @grbh , @strSql2);
-	prepare strSql from @total;
-	execute strSql ;
-	deallocate prepare strSql ;
-end */$$
-DELIMITER ;
-
-/* Procedure structure for procedure `proGrdaJzsSelect` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `proGrdaJzsSelect` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`root`@`%` PROCEDURE `proGrdaJzsSelect`(in grbh varchar(50))
-begin 
-	set @parms = grbh;
-	set @strSql1 = 'select * from	phr_grda_jzs where grbh in (' ;
-  set @strSql2 = ' )';
-  set @total = concat(@strSql1 , @parms , @strSql2 );
-	prepare str from @total;
-  execute str ;
-	deallocate prepare str;
-end */$$
-DELIMITER ;
-
-/* Procedure structure for procedure `proGrdaLbByConditionSelect` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `proGrdaLbByConditionSelect` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`root`@`%` PROCEDURE `proGrdaLbByConditionSelect`( in conditions varchar(1000) ,  in page int , in rows int )
-begin 
-	set @beginNum = ( page - 1 ) * rows;
-  set @conditions = conditions;
-  set @strSql = CONCAT( 'select id , grbh , grda_xm , grda_xb , grda_csrq , grda_sfzhm , grda_hkdz_jdzmc , grda_hkdz_jwcmc , grda_hkdz_ljmc , grda_hklx ,
-        grda_brdh , grda_jtdh , grda_lxrxm , grda_lxrdh , grda_jdrq , grda_dazt  from phr_grda_jbzl ' , @conditions ,  'order by grda_lrrq
-				limit ' , @beginNum , ' , ' , rows  );
-	prepare strSql from  @strSql ;
-	execute strSql;
-  deallocate prepare  strSql ;
-end */$$
-DELIMITER ;
-
-/* Procedure structure for procedure `proGrdaLbSelect` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `proGrdaLbSelect` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`root`@`%` PROCEDURE `proGrdaLbSelect`( in page int , in rows int )
-begin 
-	set @beginNum = ( page - 1 ) * rows;
-  set @strSql = CONCAT( 'select id , grbh , grda_xm , grda_xb , grda_csrq , grda_sfzhm , grda_hkdz_jdzmc , grda_hkdz_jwcmc , grda_hkdz_ljmc , grda_hklx ,
-        grda_brdh , grda_jtdh , grda_lxrxm , grda_lxrdh , grda_jdrq , grda_dazt  from phr_grda_jbzl order by grda_lrrq
-				limit ' , @beginNum , ' , ' , rows , ' order by grda_jdrq desc, grbh' );
-	prepare strSql from  @strSql ;
-	execute strSql;
-  deallocate prepare  strSql ;
-end */$$
-DELIMITER ;
-
-/* Procedure structure for procedure `proLoginSelect` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `proLoginSelect` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`root`@`%` PROCEDURE `proLoginSelect`( in loginName varchar(50) , in loginPassword varchar(50) )
-begin
-	set @loginName = loginName;
-	if( null = LoginPassword || "" = LoginPassword )
-	then set @loginPassword = "";
-	else set @loginPassword = loginPassword;
-	end if ;
-	set @sql = 'select loginName from rs_usr where psswrd = ? and loginName = ?';
-	prepare stringSql from @sql;
-	execute stringSql using @loginPassword , @loginName ; 
-	deallocate prepare stringSql ;
-end */$$
-DELIMITER ;
-
-/* Procedure structure for procedure `proNameSelect` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `proNameSelect` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`root`@`%` PROCEDURE `proNameSelect`(in loginName varchar(50) )
-begin 
-	if ( null = loginName || "" = loginName )
-	then set @loginName = "" ;
-	else set @loginName = loginName ;
-	end if ;
-  set @sql = ' select loginName from rs_usr where loginName = ? ';
-	prepare stringSql from @sql;
-	execute stringSql USING @loginName ;
-	deallocate prepare stringSql;
-end */$$
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `procUpdateData`(IN json VARCHAR (1000))
+BEGIN
+   /*
+    SET @json = '{"dataTable":"phr_grda_jbzl","identification":{"grbh":1114,"grda_csrq":"2011-12-30"},"data":{"grbh":"1114","grda_xm":"胡","grda_csrq":"2011-12-30", "tjbj": 3}}';
+    CALL procUpdateData(@json);
+   */
+   
+   DECLARE i INT;
+   DECLARE j INT;
+   DECLARE keyStrUnQuote VARCHAR(600);
+   DECLARE idsKeyStrUnQuote VARCHAR(400);
+   DECLARE conditionStr VARCHAR(800);
+   
+   SET @dataTable = JSON_UNQUOTE(JSON_EXTRACT(json, '$.dataTable'));
+   SET @data = JSON_EXTRACT(json, '$.data');
+   SET @identification = JSON_EXTRACT(json, '$.identification');
+   
+   SET @keysArr = JSON_KEYS(@data);
+   SET @keysArrLength = JSON_LENGTH(@data);
+   
+   SET @idsKeyArr = JSON_KEYS(@identification);
+   SET @idsKeyArrLength = JSON_LENGTH(@identification);
+   
+	SET i=0;
+	set conditionStr = '';
+	WHILE i<@keysArrLength DO
+	     SET @variable= CONCAT('$[',i,']');
+	     
+		SET @sql = 'set @temp_key = JSON_UNQUOTE(JSON_EXTRACT(?,?))';
+		PREPARE stmt FROM @sql;
+		EXECUTE stmt USING @keysArr, @variable;
+		
+		SET @sql = 'set @temp_value = JSON_EXTRACT(?,CONCAT("$.",JSON_UNQUOTE(JSON_EXTRACT(?, ?))))';
+		PREPARE stmt FROM @sql ;
+		EXECUTE stmt USING @data, @keysArr, @variable;
+		
+		IF (i = @keysArrLength - 1) THEN
+			set conditionStr = CONCAT(conditionStr, @temp_key, '=', @temp_value);
+		ELSE
+			SET conditionStr = CONCAT(conditionStr, @temp_key, '=', @temp_value, ',');
+		END IF;
+		SET i=i+1;
+	END WHILE;
+	
+	set j=0;
+	set idsKeyStrUnQuote = '';
+	while j<@idsKeyArrLength do
+		SET @variable= CONCAT('$[',j,']');
+		
+		SET @sql = 'set @temp_idsKey = JSON_UNQUOTE(JSON_EXTRACT(?,?))';
+		PREPARE stmt FROM @sql;
+		EXECUTE stmt USING @idsKeyArr, @variable;
+		
+		SET @sql = 'set @temp_idsValue = JSON_EXTRACT(?,CONCAT("$.",JSON_UNQUOTE(JSON_EXTRACT(?, ?))))';
+		PREPARE stmt FROM @sql;
+		EXECUTE stmt USING @identification, @idsKeyArr, @variable;
+		
+		SET idsKeyStrUnQuote = CONCAT(idsKeyStrUnQuote,' and ', @temp_idskey, '=', @temp_idsValue);
+	
+		set j=j+1;
+	end while;
+	
+	SET @sql = CONCAT('update ',@dataTable,' set ',conditionStr,' where 1=1',idsKeyStrUnQuote);
+	select @sql;
+	PREPARE stmt FROM @sql;
+	EXECUTE stmt;
+END */$$
 DELIMITER ;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
