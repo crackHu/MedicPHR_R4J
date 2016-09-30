@@ -4,16 +4,16 @@ const autoprefixer = require('autoprefixer');
 const HtmlwebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-const env = process.env.NODE_ENV;
 const ROOT_PATH = path.resolve(__dirname);
 const APP_PATH = path.resolve(ROOT_PATH, 'app');
-const BUILD_PATH = path.resolve(ROOT_PATH, '../WebRoot/vdsapp');
+const BUILD_PATH = path.resolve(ROOT_PATH, '../WebRoot/app');
 const NODE_MODULES = path.resolve(__dirname, 'node_modules');
+const PROJECT_NAME = 'medicPHR'
 
 const config = {
 	devtool: 'cheap-module-source-map',
 	entry: {
-		vds5: path.resolve(APP_PATH, 'app.js'),
+		[`${PROJECT_NAME}`]: path.resolve(APP_PATH, 'app.js'),
 		common: [
 			'react',
 			'react-dom',
@@ -29,7 +29,7 @@ const config = {
 	output: {
 		path: BUILD_PATH,
 		filename: 'assets/[name].bundle.js',
-		publicPath: '/vds5s1/vdsapp/'
+		publicPath: `/${PROJECT_NAME}/app/`
 	},
 	module: {
 		loaders: [{
@@ -74,6 +74,18 @@ const config = {
 		alias: {
 			'react': path.resolve(NODE_MODULES, 'react'),
 			'config': path.resolve(APP_PATH, 'config'),
+			'utils': path.resolve(APP_PATH, 'utils/utils'),
+
+			/*钉钉医疗*/
+			'ddm_conf': path.resolve(APP_PATH, 'modules/ddm/DDMConfig'),
+			/*登陆*/
+			'login_conf': path.resolve(APP_PATH, 'modules/login/LoginConfig'),
+			/*健康档案*/
+			'phr_conf': path.resolve(APP_PATH, 'modules/phr/PHRConfig'),
+			/*权限*/
+			'rg_conf': path.resolve(APP_PATH, 'modules/rg/RGConfig'),
+			/*统计*/
+			'stat_conf': path.resolve(APP_PATH, 'modules/stat/STATConfig'),
 		},
 		extensions: ['', '.js', '.jsx']
 	},
@@ -88,12 +100,12 @@ const config = {
 		}),
 		new webpack.optimize.CommonsChunkPlugin({
 			name: 'common',
-			chunks: ['vds5'],
+			chunks: ['medicPHR'],
 			filename: 'assets/[name].js',
 			minChunks: Infinity
 		}),
 		new webpack.DefinePlugin({
-			'process.env.NODE_ENV': JSON.stringify(env)
+			'process.env.NODE_ENV': JSON.stringify('production')
 		}),
 		new ExtractTextPlugin("assets/[name].style.css"),
 		new HtmlwebpackPlugin({

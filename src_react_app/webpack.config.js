@@ -7,10 +7,11 @@ const ROOT_PATH = path.resolve(__dirname);
 const APP_PATH = path.resolve(ROOT_PATH, 'app');
 const BUILD_PATH = path.resolve(ROOT_PATH, 'build');
 const NODE_MODULES = path.resolve(__dirname, 'node_modules');
+const PROJECT_NAME = 'medicPHR'
 
 const config = {
 	entry: {
-		vds5: path.resolve(APP_PATH, 'app.js')
+		[`${PROJECT_NAME}`]: path.resolve(APP_PATH, 'app.js')
 	},
 	output: {
 		path: BUILD_PATH,
@@ -25,9 +26,9 @@ const config = {
 		inline: true,
 		progress: true,
 		proxy: {
-			'/vds5s1/*': {
+			[`/${PROJECT_NAME}/*`]: {
 				target: 'http://localhost:8080/',
-				host: 'example.com',
+				host: '',
 			}
 		}
 	},
@@ -74,11 +75,17 @@ const config = {
 		alias: {
 			'react': path.resolve(NODE_MODULES, 'react'),
 			'config': path.resolve(APP_PATH, 'config'),
+			'utils': path.resolve(APP_PATH, 'utils/utils'),
 
-			'hcen_conf': path.resolve(APP_PATH, 'modules/hcen/HCenConfig'),
-			'login_conf': path.resolve(APP_PATH, 'modules/login/PDConfig'),
-			'pd_conf': path.resolve(APP_PATH, 'modules/pd/PDConfig'),
+			/*钉钉医疗*/
+			'ddm_conf': path.resolve(APP_PATH, 'modules/ddm/DDMConfig'),
+			/*登陆*/
+			'login_conf': path.resolve(APP_PATH, 'modules/login/LoginConfig'),
+			/*健康档案*/
+			'phr_conf': path.resolve(APP_PATH, 'modules/phr/PHRConfig'),
+			/*权限*/
 			'rg_conf': path.resolve(APP_PATH, 'modules/rg/RGConfig'),
+			/*统计*/
 			'stat_conf': path.resolve(APP_PATH, 'modules/stat/STATConfig'),
 		},
 		extensions: ['', '.js', '.jsx']
@@ -86,6 +93,10 @@ const config = {
 	plugins: [
 		new webpack.optimize.UglifyJsPlugin({
 			minimize: true
+		}),
+		new webpack.DefinePlugin({
+			'process.env.NODE_ENV': JSON.stringify('development'),
+			BROWSER: JSON.stringify(true)
 		}),
 		new HtmlwebpackPlugin({
 			favicon: './app/assets/img/favicon.ico',

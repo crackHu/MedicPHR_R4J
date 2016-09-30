@@ -129,40 +129,45 @@ public class JsonData {
 		StringBuffer values = new StringBuffer("'");
 		Iterator it = dataIn.entrySet().iterator();
 		if( null == it ){
-			log4.log.info(" -=-=-=-=-=-=-=-=-=-=-=-insert dataIn 是空的 -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + insert + "     " + dataIn);
+			log4.log.info(" -=-=-=-=-=-=-=-=-=-=-=-dealListInsert dataIn 是空的 -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + insert + "     " + dataIn);
 			return null;
 		}else{
 			while(it.hasNext()){
 				Map.Entry m = (Entry) it.next();
 				String key = (String) m.getKey();
 				String value = (String) m.getValue();
-				insert.append(key + ",");
-				values.append(value + "','");
+				if(!key.equals("id")){		
+					insert.append(key + ",");
+					values.append(value + "','");
+				}
 			}
 			//insert.deleteCharAt(insert.length() - 1);
-			insert.append(" id) values(");
-			log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-values  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + values);
+			insert.append(" id ) values(");
+			log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-dealListInsert  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + values);
 			//String val = values.substring(0, values.length() - 2);
 			String id = UUID.randomUUID().toString();
 			values.append(id + "' " );
 			insert.append(values);
 			insert.append(")");
-			log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-insert  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + insert);
+			log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-dealListInsert  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + insert);
 		}	
-		log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-insert  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + insert);		
+		log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-dealListInsert  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + insert);		
 		return insert.toString();
 	}
+	
+	
 	
 	/**
 	 *   对 json 数据的处理 并且拼接成输入更新 语句
 	 */
 	public String dealListUpdate(String tableName , JSONObject dataIn , String id){
-		
+		log4.log.info(" -=-=-=-=-=-=-=-=-=-=-=-dealListUpdate id  -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + id );
 		StringBuffer update = new StringBuffer("update " + tableName + " set ");
-		if(null != id){
+		if(!"".equals(id)){
+			//证明记录存在，更新
 			Iterator it = dataIn.entrySet().iterator();
 			if( null == it ){
-				log4.log.info(" -=-=-=-=-=-=-=-=-=-=-=-update dataIn 是空的 -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + update + "     " + dataIn);
+				log4.log.info(" -=-=-=-=-=-=-=-=-=-=-=-dealListUpdate dataIn 是空的 -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + update + "     " + dataIn);
 				return null;
 			}else{
 				while(it.hasNext()){
@@ -175,18 +180,20 @@ public class JsonData {
 				}
 				update.deleteCharAt(update.length()-2);
 				update.append("where id = '" + id + "'");
-				log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-update  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + update);
+				log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-dealListUpdate  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + update);
 			}	
+		}else{
+			//记录不存在， 刚刚加进来的，需要插入。
+			return dealListInsert(tableName , dataIn);
 		}
-		
-		log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-update  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + update);
+		log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-dealListUpdate  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + update);
 		return update.toString();
 	}
 	
 	
 	
 	
-	
+
 	
 	
 	

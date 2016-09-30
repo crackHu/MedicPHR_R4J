@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
@@ -73,6 +74,8 @@ public class Bo_Vds_BoPersonDoc extends BoBase {
 
 		// 返回前台
 		VdsResponse response = new VdsResponse();
+		response.getDout().getStatus().setResultCode(1);
+		response.getDout().getStatus().setResultMsg("ok");
 		try {
 			Connection conn = DataSourceUtils.getConnection(jdbcTemplate
 					.getDataSource());
@@ -107,19 +110,15 @@ public class Bo_Vds_BoPersonDoc extends BoBase {
 				}
 				pdSaveDataList.add(json);
 			}
-			
-			response.getDout().getStatus().setResultCode(1);
-			response.getDout().getStatus().setResultMsg("ok");
 			// response.getDout().setTotal(rows);
 		} catch (Exception e) {
 			// TODO: handle exception
 			msg = e.getMessage();
-			jDataOut.put("resultCode", -99);
-			jDataOut.put("resultMsg", null);
-			jDataOut.put("fail", msg);
+			response.getDout().getStatus().setResultCode(-99);
+			response.getDout().getStatus().setResultMsg(msg);
 			e.printStackTrace();
 		}
-		
+
 		// 拿取返回结果
 		String jsons = response.toString(response);
 		jDataOut = JSONObject.fromObject(jsons);
@@ -148,7 +147,12 @@ public class Bo_Vds_BoPersonDoc extends BoBase {
 		ResultSet result = null;
 
 		JSONObject json = new JSONObject();
+
+		// 返回前台
 		VdsResponse response = new VdsResponse();
+		response.getDout().getStatus().setResultCode(1);
+		response.getDout().getStatus().setResultMsg("ok");
+
 		try {
 
 			// 开启连接
@@ -188,16 +192,11 @@ public class Bo_Vds_BoPersonDoc extends BoBase {
 				// jzsSum = (Integer) jzsList.remove(1);
 				// jbzlList.add(jsonDate.queryForWhile(call));
 			}
-			// 返回前台
-			response.getDout().getStatus().setResultCode(1);
-			response.getDout().getStatus().setResultMsg("ok");
-
 		} catch (Exception e) {
 			// TODO: handle exception
 			msg = e.getMessage();
-			jDataOut.put("resultCode", -99);
-			jDataOut.put("resultMsg", null);
-			jDataOut.put("fail", msg);
+			response.getDout().getStatus().setResultCode(-99);
+			response.getDout().getStatus().setResultMsg(msg);
 			e.printStackTrace();
 		}
 
@@ -292,9 +291,11 @@ public class Bo_Vds_BoPersonDoc extends BoBase {
 		String temp = "";
 		int total = 0;
 		List<Object> pdSaveDataList = new ArrayList<Object>();
-		
+
 		// 返回前台
 		VdsResponse response = new VdsResponse();
+		response.getDout().getStatus().setResultCode(1);
+		response.getDout().getStatus().setResultMsg("ok");
 		try {
 			Connection conn = DataSourceUtils.getConnection(jdbcTemplate
 					.getDataSource());
@@ -334,9 +335,8 @@ public class Bo_Vds_BoPersonDoc extends BoBase {
 		} catch (Exception e) {
 			// TODO: handle exception
 			msg = e.getMessage();
-			jDataOut.put("resultCode", -99);
-			jDataOut.put("resultMsg", null);
-			jDataOut.put("fail", msg);
+			response.getDout().getStatus().setResultCode(-99);
+			response.getDout().getStatus().setResultMsg(msg);
 			e.printStackTrace();
 		}
 
@@ -349,21 +349,21 @@ public class Bo_Vds_BoPersonDoc extends BoBase {
 		return jDataOut;
 	}
 
-	/**
+/*	*//**
 	 * 个人档案保存按钮 （ 包括 更新 、 保存 ）
 	 * 
 	 * @param dataIn
 	 * @return jDataOut
 	 * @throws Exception
 	 *             SQLException
-	 */
+	 *//*
 	public JSONObject savePd(JSONObject dataIn) throws SQLException {
 
 		JSONObject jDataOut = new JSONObject();
 
 		JSONObject din = (JSONObject) dataIn.get("din");
 		JSONObject jsonJbzl = (JSONObject) din.get("grdaJbzl");
-		String grbh = (String) jsonJbzl.get("grbh");
+		String id = (String) jsonJbzl.get("id");
 
 		String msg = "";
 		CallableStatement call = null;
@@ -374,16 +374,24 @@ public class Bo_Vds_BoPersonDoc extends BoBase {
 				.getDataSource());
 
 		VdsResponse response = new VdsResponse();
+		response.getDout().getStatus().setResultCode(1);
+		response.getDout().getStatus().setResultMsg("ok");
 		try {
-			// 判断这个个人编号是否存在
-			call = conn.prepareCall("{call proGrdaGrbhSelect ( '" + grbh
-					+ "' ) }");
-			result = call.executeQuery();
-			if (result.next()) {
 
-				UpdatePdData(dataIn);
+			if (null != id) {
+				// 判断这个人的 ID 是否存在
+				call = conn.prepareCall("{call proGrdaGrIdSelect ( \"'" + id
+						+ "'\" ) }");
+				result = call.executeQuery();
+				if (result.next()) {
+					// 有Id 并且查到此人存在
+					UpdatePdData(dataIn);
+				} else {
+					// 有Id 但是查无此人
 
+				}
 			} else {
+				// id 为空 前台没有数据 ，就是无此人记录
 				savePdData(dataIn);
 			}
 
@@ -391,21 +399,21 @@ public class Bo_Vds_BoPersonDoc extends BoBase {
 			// TODO: handle exception
 			conn.rollback();
 			msg = e.getMessage();
-			jDataOut.put("resultCode", -99);
-			jDataOut.put("resultMsg", null);
-			jDataOut.put("fail", msg);
+			response.getDout().getStatus().setResultCode(-99);
+			response.getDout().getStatus().setResultMsg(msg);
 			e.printStackTrace();
 		}
 
 		// 拿取返回结果
 		String jsons = response.toString(response);
 		jDataOut = JSONObject.fromObject(jsons);
+		jDataOut.put("dout", "");
 		return jDataOut;
-	}
+	}*/
 
 	/**
-	 * 个人档案保存 （ 包括 家族史 、 基础资料 、 既往史 ） resultCode : 1: 全部插入成功 100001 ： 个人编号存在
-	 * 100002：基础资料插入失败 100003 :有 既往史插入失败 100004 ： 有家族史插入失败
+	 * 个人档案保存 （ 包括 家族史 、 基础资料 、 既往史 ） resultCode : 1: 全部插入成功 -100001 ： 改用户已经存在
+	 * -100002：基础资料插入失败 -100003 :有 既往史插入失败 -100004 ： 有家族史插入失败
 	 * 
 	 * @param dataIn
 	 * @return jDataOut
@@ -421,8 +429,8 @@ public class Bo_Vds_BoPersonDoc extends BoBase {
 		JSONObject jsonJbzl = (JSONObject) din.get("grdaJbzl");
 		JSONArray jsonJws = (JSONArray) din.get("grdaJws");
 		JSONArray jsonJzs = (JSONArray) din.get("grdaJzs");
-		String grbh = (String) jsonJbzl.get("grbh");
-
+		String id = (String) jsonJbzl.get("id");
+		System.out.println("　　id==null　" + (null == id) + "      "   + ("".equals(id)) +  "   1" +id+"2");
 		String msg = "";
 		CallableStatement call = null;
 		ResultSet result = null;
@@ -433,49 +441,41 @@ public class Bo_Vds_BoPersonDoc extends BoBase {
 		boolean flag = false;
 
 		VdsResponse response = new VdsResponse();
+		// 返回前台
+		response.getDout().getStatus().setResultCode(1);
+		response.getDout().getStatus().setResultMsg("保存成功！");
 		try {
-			// 执行 个人档案 的 基础资料的 插入
-			if (null != jsonJbzl) {
-				sql = jsonDate.dealListInsert("phr_grda_jbzl", jsonJbzl);
-				log4.log.info(" -=-=-=-=-=- -=-=-=-= savePdData 方法里面  执行的  jsonJbzl sql 为：  -=-=-=-= - -=-=-=-=-="
-						+ sql);
-				i = jdbcTemplate.update(sql);
-				if (i < 0) {
-					// 证明插入不成功
-					conn.rollback();
-					response.getDout().getStatus().setResultCode(100002);
-					response.getDout().getStatus().setResultMsg(" 基础资料插入失败   ");
-				} else {
-					// 插入成功，插入既往史
-					if (null != jsonJws) {
-						log4.log.info(" -=-=-=-=-=- -=-=-=-= savePdData 方法里面  执行的  jsonJws 的长度  为：  -=-=-=-= - -=-=-=-=-="
-								+ jsonJws.size());
-						for (int j = 0; j < jsonJws.size(); j++) {
-							JSONObject jsonJwsOne = (JSONObject) jsonJws.get(j);
-							sql = jsonDate.dealListInsert("phr_grda_jws",
-									jsonJwsOne);
-							log4.log.info(" -=-=-=-=-=- -=-=-=-= savePdData 方法里面  执行的  jsonJws sql 为：  -=-=-=-= - -=-=-=-=-="
-									+ sql);
-							i = jdbcTemplate.update(sql);
-							if (i < 0) {
-								// 证明插入不成功
-								conn.rollback();
-								response.getDout().getStatus()
-										.setResultCode(100003);
-								response.getDout().getStatus()
-										.setResultMsg(" 有 既往史 插入失败   ");
-								flag = true;
-								break;
-							}
-						}
 
-						if (null != jsonJzs && !flag) {
-							// 插入成功 插入家族史
-							for (int k = 0; k < jsonJzs.size(); k++) {
-								JSONObject jsonJzsOne = (JSONObject) jsonJzs
-										.get(k);
-								sql = jsonDate.dealListInsert("phr_grda_jzs",
-										jsonJzsOne);
+			if (!("".equals(id))) {
+				/*call = conn.prepareCall("{call proGrdaGrIdSelect ( \"'" + id
+						+ "'\" ) }");
+				result = call.executeQuery();*/
+				// 该用户已经存在
+				response.getDout().getStatus().setResultCode(-100001);
+				response.getDout().getStatus().setResultMsg("改用户已经存在");
+			} else {
+				// 执行 个人档案 的 基础资料的 插入
+				if (null != jsonJbzl) {
+					sql = jsonDate.dealListInsert("phr_grda_jbzl", jsonJbzl);
+					log4.log.info(" -=-=-=-=-=- -=-=-=-= savePdData 方法里面  执行的  jsonJbzl sql 为：  -=-=-=-= - -=-=-=-=-="
+							+ sql);
+					i = jdbcTemplate.update(sql);
+					if (i < 0) {
+						// 证明插入不成功
+						conn.rollback();
+						response.getDout().getStatus().setResultCode(-100002);
+						response.getDout().getStatus()
+								.setResultMsg(" 基础资料插入失败   ");
+					} else {
+						// 插入成功，插入既往史
+						if (null != jsonJws) {
+							log4.log.info(" -=-=-=-=-=- -=-=-=-= savePdData 方法里面  执行的  jsonJws 的长度  为：  -=-=-=-= - -=-=-=-=-="
+									+ jsonJws.size());
+							for (int j = 0; j < jsonJws.size(); j++) {
+								JSONObject jsonJwsOne = (JSONObject) jsonJws
+										.get(j);
+								sql = jsonDate.dealListInsert("phr_grda_jws",
+										jsonJwsOne);
 								log4.log.info(" -=-=-=-=-=- -=-=-=-= savePdData 方法里面  执行的  jsonJws sql 为：  -=-=-=-= - -=-=-=-=-="
 										+ sql);
 								i = jdbcTemplate.update(sql);
@@ -483,27 +483,46 @@ public class Bo_Vds_BoPersonDoc extends BoBase {
 									// 证明插入不成功
 									conn.rollback();
 									response.getDout().getStatus()
-											.setResultCode(100004);
+											.setResultCode(-100003);
 									response.getDout().getStatus()
-											.setResultMsg(" 有 家族史插入失败   ");
+											.setResultMsg(" 有 既往史 插入失败   ");
 									flag = true;
 									break;
+								}
+							}
+
+							if (null != jsonJzs && !flag) {
+								// 插入成功 插入家族史
+								for (int k = 0; k < jsonJzs.size(); k++) {
+									JSONObject jsonJzsOne = (JSONObject) jsonJzs
+											.get(k);
+									sql = jsonDate.dealListInsert(
+											"phr_grda_jzs", jsonJzsOne);
+									log4.log.info(" -=-=-=-=-=- -=-=-=-= savePdData 方法里面  执行的  jsonJws sql 为：  -=-=-=-= - -=-=-=-=-="
+											+ sql);
+									i = jdbcTemplate.update(sql);
+									if (i < 0) {
+										// 证明插入不成功
+										conn.rollback();
+										response.getDout().getStatus()
+												.setResultCode(-100004);
+										response.getDout().getStatus()
+												.setResultMsg(" 有 家族史插入失败   ");
+										flag = true;
+										break;
+									}
 								}
 							}
 						}
 					}
 				}
 			}
-			// 返回前台
-			response.getDout().getStatus().setResultCode(1);
-			response.getDout().getStatus().setResultMsg("ok");
 		} catch (Exception e) {
 			// TODO: handle exception
 			conn.rollback();
 			msg = e.getMessage();
-			jDataOut.put("resultCode", -99);
-			jDataOut.put("resultMsg", null);
-			jDataOut.put("fail", msg);
+			response.getDout().getStatus().setResultCode(-99);
+			response.getDout().getStatus().setResultMsg(msg);
 			e.printStackTrace();
 		}
 
@@ -511,13 +530,13 @@ public class Bo_Vds_BoPersonDoc extends BoBase {
 		String jsons = response.toString(response);
 		jDataOut = JSONObject.fromObject(jsons);
 		// JSONObject d = JSONObject.fromObject(jsons);
-
+		jDataOut.put("dout", "");
 		return jDataOut;
 	}
 
 	/**
-	 * 个人档案保更新（ 包括 家族史 、 基础资料 、 既往史 ） resultCode : 
-	 * 100002：基础资料更新失败 100003 :有 既往史更新失败 100004 ： 有家族史更新失败
+	 * 个人档案 更新（ 包括 家族史 、 基础资料 、 既往史 ） resultCode :-100008 : 该用户不存在
+	 * -100005：基础资料更新失败 -100006 :有 既往史更新失败 -100007 ： 有家族史更新失败
 	 * 
 	 * @param dataIn
 	 * @return jDataOut
@@ -533,7 +552,7 @@ public class Bo_Vds_BoPersonDoc extends BoBase {
 		JSONObject jsonJbzl = (JSONObject) din.get("grdaJbzl");
 		JSONArray jsonJws = (JSONArray) din.get("grdaJws");
 		JSONArray jsonJzs = (JSONArray) din.get("grdaJzs");
-		String grbh = (String) jsonJbzl.get("grbh");
+		String id = (String) jsonJbzl.get("id");
 
 		String msg = "";
 		CallableStatement call = null;
@@ -545,53 +564,39 @@ public class Bo_Vds_BoPersonDoc extends BoBase {
 		boolean flag = false;
 
 		VdsResponse response = new VdsResponse();
+		// 返回前台
+		response.getDout().getStatus().setResultCode(1);
+		response.getDout().getStatus().setResultMsg("更新成功！");
 		try {
-			// 执行 个人档案 的 基础资料的 更新
-			if (null != jsonJbzl) {
-				String jbzlId = (String) jsonJbzl.get("id");
-				sql = jsonDate
-						.dealListUpdate("phr_grda_jbzl", jsonJbzl, jbzlId);
-				log4.log.info(" -=-=-=-=-=- -=-=-=-= UpdatePdData 方法里面  执行的  jsonJbzl sql 为：  -=-=-=-= - -=-=-=-=-="
-						+ sql);
-				i = jdbcTemplate.update(sql);
-				if (i < 0) {
-					// 证明更新不成功
-					conn.rollback();
-					response.getDout().getStatus().setResultCode(100002);
-					response.getDout().getStatus().setResultMsg(" 基础资料更新失败   ");
-				} else {
-					// 更新成功，更新既往史
-					if (null != jsonJws) {
-						log4.log.info(" -=-=-=-=-=- -=-=-=-= UpdatePdData 方法里面  执行的  jsonJws 的长度  为：  -=-=-=-= - -=-=-=-=-="
-								+ jsonJws.size());
-						for (int j = 0; j < jsonJws.size(); j++) {
-							JSONObject jsonJwsOne = (JSONObject) jsonJws.get(j);
-							String jwsId = (String) jsonJwsOne.get("id");
-							sql = jsonDate.dealListUpdate("phr_grda_jws",
-									jsonJwsOne , jwsId);
-							log4.log.info(" -=-=-=-=-=- -=-=-=-= UpdatePdData 方法里面  执行的  jsonJws sql 为：  -=-=-=-= - -=-=-=-=-="
-									+ sql);
-							i = jdbcTemplate.update(sql);
-							if (i < 0) {
-								// 证明插入不成功
-								conn.rollback();
-								response.getDout().getStatus()
-										.setResultCode(100003);
-								response.getDout().getStatus()
-										.setResultMsg(" 有 既往史 更新 失败   ");
-								flag = true;
-								break;
-							}
-						}
-
-						if (null != jsonJzs && !flag) {
-							// 插入成功 插入家族史
-							for (int k = 0; k < jsonJzs.size(); k++) {
-								JSONObject jsonJzsOne = (JSONObject) jsonJzs
-										.get(k);
-								String jzsId = (String) jsonJzsOne.get("id");
-								sql = jsonDate.dealListUpdate("phr_grda_jzs",
-										jsonJzsOne , jzsId);
+			call = conn.prepareCall("{call proGrdaGrIdSelect ( \"'" + id
+					+ "'\" ) }");
+			result = call.executeQuery();
+			if (result.next()) {
+				// 执行 个人档案 的 基础资料的 更新
+				if (null != jsonJbzl) {
+					String jbzlId = (String) jsonJbzl.get("id");
+					sql = jsonDate.dealListUpdate("phr_grda_jbzl", jsonJbzl,
+							jbzlId);
+					log4.log.info(" -=-=-=-=-=- -=-=-=-= UpdatePdData 方法里面  执行的  jsonJbzl sql 为：  -=-=-=-= - -=-=-=-=-="
+							+ sql);
+					i = jdbcTemplate.update(sql);
+					if (i < 0) {
+						// 证明更新不成功
+						conn.rollback();
+						response.getDout().getStatus().setResultCode(-100005);
+						response.getDout().getStatus()
+								.setResultMsg(" 基础资料更新失败   ");
+					} else {
+						// 更新成功，更新既往史
+						if (null != jsonJws) {
+							log4.log.info(" -=-=-=-=-=- -=-=-=-= UpdatePdData 方法里面  执行的  jsonJws 的长度  为：  -=-=-=-= - -=-=-=-=-="
+									+ jsonJws.size());
+							for (int j = 0; j < jsonJws.size(); j++) {
+								JSONObject jsonJwsOne = (JSONObject) jsonJws
+										.get(j);
+								String jwsId = (String) jsonJwsOne.get("id");
+								sql = jsonDate.dealListUpdate("phr_grda_jws",
+										jsonJwsOne, jwsId);
 								log4.log.info(" -=-=-=-=-=- -=-=-=-= UpdatePdData 方法里面  执行的  jsonJws sql 为：  -=-=-=-= - -=-=-=-=-="
 										+ sql);
 								i = jdbcTemplate.update(sql);
@@ -599,28 +604,52 @@ public class Bo_Vds_BoPersonDoc extends BoBase {
 									// 证明插入不成功
 									conn.rollback();
 									response.getDout().getStatus()
-											.setResultCode(100004);
+											.setResultCode(-100006);
 									response.getDout().getStatus()
-											.setResultMsg(" 有 家族史插入失败   ");
+											.setResultMsg(" 有 既往史 更新 失败   ");
 									flag = true;
 									break;
+								}
+							}
+
+							if (null != jsonJzs && !flag) {
+								// 插入成功 插入家族史
+								for (int k = 0; k < jsonJzs.size(); k++) {
+									JSONObject jsonJzsOne = (JSONObject) jsonJzs
+											.get(k);
+									String jzsId = (String) jsonJzsOne
+											.get("id");
+									sql = jsonDate.dealListUpdate(
+											"phr_grda_jzs", jsonJzsOne, jzsId);
+									log4.log.info(" -=-=-=-=-=- -=-=-=-= UpdatePdData 方法里面  执行的  jsonJws sql 为：  -=-=-=-= - -=-=-=-=-="
+											+ sql);
+									i = jdbcTemplate.update(sql);
+									if (i < 0) {
+										// 证明插入不成功
+										conn.rollback();
+										response.getDout().getStatus()
+												.setResultCode(-100007);
+										response.getDout().getStatus()
+												.setResultMsg(" 有 家族史插入失败   ");
+										flag = true;
+										break;
+									}
 								}
 							}
 						}
 					}
 				}
+			} else {
+				// 该 用户不 存在
+				response.getDout().getStatus().setResultCode(-100008);
+				response.getDout().getStatus().setResultMsg("改用户不存在");
 			}
-			// 返回前台
-			response.getDout().getStatus().setResultCode(1);
-			response.getDout().getStatus().setResultMsg("ok");
-
 		} catch (Exception e) {
 			// TODO: handle exception
 			conn.rollback();
 			msg = e.getMessage();
-			jDataOut.put("resultCode", -99);
-			jDataOut.put("resultMsg", null);
-			jDataOut.put("fail", msg);
+			response.getDout().getStatus().setResultCode(-99);
+			response.getDout().getStatus().setResultMsg(msg);
 			e.printStackTrace();
 		}
 
@@ -628,8 +657,39 @@ public class Bo_Vds_BoPersonDoc extends BoBase {
 		String jsons = response.toString(response);
 		jDataOut = JSONObject.fromObject(jsons);
 		// JSONObject d = JSONObject.fromObject(jsons);
+		jDataOut.put("dout", "");
 
 		return jDataOut;
 	}
+	
+	
+	
+	/**
+	 *    删除个人档案  
+	 */
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

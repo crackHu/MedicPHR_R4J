@@ -1,19 +1,20 @@
+//*************全局配置*************//
 let baseUrl
 if (process.env.NODE_ENV === 'production') {
-  baseUrl = 'http://localhost:8080'
+  baseUrl = 'http://169.254.16.253:8080'
 } else {
   baseUrl = ''
 }
 
-export const config = {
+export const CONFIG = {
   baseUrl: baseUrl,
-  projectName: "vds5s1",
+  projectName: "medicPHR",
   host: 'http://www.basoft.cn/',
   needDevTool: false
 }
 
 /**************菜单配置**************/
-export const menu_config = {
+export const MENU_CONFIG = {
   headerNav: [{
     key: "home",
     path: "/",
@@ -28,7 +29,7 @@ export const menu_config = {
     key: "AntContainer2",
     path: "/AntContainer2",
     name: "测试2",
-    iconType: "code"
+    iconType: "code-o"
   }, {
     key: "ArchivDetail",
     path: "/ArchivDetail",
@@ -38,62 +39,62 @@ export const menu_config = {
 }
 
 /**************档案配置**************/
-export const arc_type_config = {
+export const ARC_TYPE_CONFIG = {
   arcType: [{
     name: "个人基本信息表",
-    content: 'PersonalDetailForm',
+    content: 'Archive/PersonalDetailForm',
     key: "personalDetail",
     sub: [{
       name: "一般情况",
-      content: 'GeneralSituationForm',
+      content: 'Archive/GeneralSituationForm',
       key: "generalSituation"
     }, {
       name: "家族史与生活情况",
-      content: 'FamiLivelHistoryFrom',
+      content: 'Archive/FamiLivelHistoryFrom',
       key: "famiLivelHistory"
     }]
   }, {
     name: "健康体检表",
-    content: 'HealthMedicalForm',
+    content: 'Archive/HealthMedicalForm',
     key: "healthMedical"
   }],
   specArcType: [{
     name: "高血压专档",
-    content: 'HealthMedicalForm',
+    content: 'SpecialArchive/HypertensionForm',
     key: "hypertension"
   }, {
     name: "糖尿病专档",
-    content: 'HealthMedicalForm',
+    content: 'SpecialArchive/DiabetesForm',
     key: "diabetes"
   }, {
     name: "老年人专档",
-    content: 'HealthMedicalForm',
+    content: 'SpecialArchive/AgedForm',
     key: "aged"
   }, {
     name: "肿瘤病",
-    content: 'HealthMedicalForm',
+    content: 'SpecialArchive/OncosisForm',
     key: "oncosis"
   }, {
     name: "残疾人",
-    content: 'HealthMedicalForm',
+    content: 'SpecialArchive/HandicappedForm',
     key: "handicapped"
   }, {
     name: "女性保健专档",
-    content: 'HealthMedicalForm',
+    content: 'SpecialArchive/FemalecareForm',
     key: "femalecare"
   }, {
     name: "孕产妇专档",
-    content: 'HealthMedicalForm',
+    content: 'SpecialArchive/MaternalForm',
     key: "maternal"
   }, {
     name: "钉钉医疗档案",
-    content: 'HealthMedicalForm',
+    content: 'SpecialArchive/DDMedicalForm',
     key: "ddmedical"
   }]
 }
 
 /**************表单控件配置**************/
-export const arc_form_widget_config = {
+export const ARC_FORM_WIDGET_CONFIG = {
   selectOption: {
 
     /*True or false*/
@@ -107,22 +108,22 @@ export const arc_form_widget_config = {
 
     /*性别*/
     sex: [{
-      key: 'unknown',
-      value: '未知的性别'
-    }, {
       key: 'male',
       value: '男'
     }, {
       key: 'female',
       value: '女'
+    }, {
+      key: 'unknown',
+      value: '未知的性别'
     }],
 
     /*居住类型*/
     permanentType: [{
-      key: '1',
+      key: 'jurisdiction',
       value: '户籍（辖区）'
     }, {
-      key: '2',
+      key: 'nojurisdiction',
       value: 'test'
     }],
 
@@ -299,49 +300,49 @@ export const arc_form_widget_config = {
 
     /*血型*/
     bloodType: [{
-      key: "A型",
+      key: "AT",
       value: "A型"
     }, {
-      key: "B型",
+      key: "BT",
       value: "B型"
     }, {
-      key: "O型",
+      key: "OT",
       value: "O型"
     }],
 
     /*RH阴性*/
     rhNegative: [{
-      key: '1',
+      key: 'panda',
       value: '是'
     }, {
-      key: '2',
+      key: 'nopanda',
       value: 'test'
     }],
 
     /*文化程度*/
     lvOfEducation: [{
-      key: '1',
+      key: 'college',
       value: '大专'
     }, {
-      key: '2',
+      key: 'Undergraduate',
       value: '本科'
     }],
 
     /*职业*/
     profession: [{
-      key: '1',
-      value: '商业服务人员'
+      key: 'waiter',
+      value: '商业  人员'
     }, {
-      key: '2',
+      key: 'technicist',
       value: '技术人员'
     }],
 
     /*婚姻状况*/
     maritalStatus: [{
-      key: '1',
+      key: '已婚',
       value: '已婚'
     }, {
-      key: '2',
+      key: '未婚',
       value: '未婚'
     }],
   },
@@ -406,53 +407,59 @@ export const arc_form_widget_config = {
 
     /*医疗费用支付方式*/
     medicalPayMethod: [{
+      key: 'a',
       label: '城镇职工基本医疗保险',
-      value: '1'
+      value: '城镇职工基本医疗保险'
     }, {
+      key: 'b',
       label: '城镇居民基本医疗保险',
-      value: '2'
+      value: '城镇居民基本医疗保险'
     }, {
+      key: 'c',
       label: '新型农村合作医疗',
-      value: '3'
+      value: '新型农村合作医疗'
     }, {
+      key: 'd',
       label: '贫困救助',
-      value: '4'
+      value: '贫困救助'
     }, {
+      key: 'e',
       label: '商业医疗保险',
-      value: '5'
+      value: '商业医疗保险'
     }, {
+      key: 'f',
       label: '全公费',
-      value: '6'
+      value: '全公费'
     }, {
+      key: 'h',
       label: '全自费',
-      value: '7'
-    }, {
-      label: '其他',
-      value: 'other'
+      value: '全自费'
     }],
 
     /*药物过敏*/
     drugAllergy: [{
+      key: 'adrenaline',
       label: '肾上腺素',
-      value: 'Apple'
+      value: '肾上腺素'
     }, {
+      key: 'a',
+      label: '大姨妈素',
+      value: '大姨妈素'
+    }, {
+      key: 'b',
       label: '肾上腺素',
-      value: 'Pear'
-    }, {
-      label: '肾上腺素',
-      value: 'Orange'
-    }, {
-      label: '其他',
-      value: 'Orange2'
+      value: '肾上腺素1'
     }],
 
     /*暴露史*/
     exposureHistory: [{
-      label: '毒物',
-      value: 'Apple'
+      key: 'poison',
+      label: 'aa',
+      value: '毒物'
     }, {
-      label: '射线',
-      value: 'Pear'
+      key: 'radial',
+      label: 'bb',
+      value: '射线'
     }]
   }
 }

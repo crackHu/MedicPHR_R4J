@@ -21,42 +21,31 @@ public class VdsResponse extends Basetuple implements Serializable{
 			dout=new ArrayList<Object>();
 		}
 
-
-
-
 		public Status getStatus() {
 			return status;
 		}
+		
 		public void setStatus(Status status) {
 			this.status = status;
 		}
-		
-
 	}
+	
+	
+	
 	public class Status implements Serializable{
 		int resultCode;
 	    String resultMsg;
-	    
-
 
 		public Status(){
 		}
-
-
-		
 
 		public int getResultCode() {
 			return resultCode;
 		}
 
-
-
-
 		public String getResultMsg() {
 			return resultMsg;
 		}
-
-
 
 
 		public void jsonStringToHeader(JSONObject json){	
@@ -64,26 +53,24 @@ public class VdsResponse extends Basetuple implements Serializable{
 				this.resultCode=json.isNull("resultCode")?-1:json.getInt("resultCode");
 			} catch (JSONException e) {
 				e.printStackTrace();
-			}
-			
+			}			
 		}
-
-
-
 
 		public void setResultCode(int resultCode) {
 			this.resultCode = resultCode;
 		}
 
-
-
-
 		public void setResultMsg(String resultMsg) {
 			this.resultMsg = resultMsg;
 		}
 		
-		
 	}
+	
+	
+	
+	
+	
+	
 	Dout dout;
 
 	private int total ;
@@ -99,7 +86,6 @@ public class VdsResponse extends Basetuple implements Serializable{
 			jsonToBasetuple(json);
 			JSONObject doutJson=json.getJSONObject("dout");
 			dout.getStatus().jsonStringToHeader(doutJson.getJSONObject("status"));
-			
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -108,15 +94,15 @@ public class VdsResponse extends Basetuple implements Serializable{
 	public Status _getStatus() {
 		return this.getDout().getStatus();
 	}
+	
 	public void _setStatus(Status Status) {
 		this.getDout().setStatus(Status);
 	}
-
-
 	
 	public Dout getDout() {
 		return dout;
 	}
+	
 	public void setDout(Dout dout) {
 		this.dout = dout;
 	}
