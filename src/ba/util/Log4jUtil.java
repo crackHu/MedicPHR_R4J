@@ -22,7 +22,8 @@ import org.apache.log4j.MDC;
 import org.apache.log4j.NDC;
 import org.apache.log4j.Priority;
 
-public class Bo_vds_log4jUtil extends DailyRollingFileAppender{
+
+public class Log4jUtil extends DailyRollingFileAppender {
 
 	// 存储编码格式信息
 	private String encode = null;
@@ -32,7 +33,7 @@ public class Bo_vds_log4jUtil extends DailyRollingFileAppender{
 
 	// transient : 这个字段的生命周期仅存于调用者的内存中而不会写到磁盘里持久化
 	public transient static final Log log = LogFactory
-			.getLog(Bo_vds_log4jUtil.class);
+			.getLog(Log4jUtil.class);
 	static {
 		try {
 			init();
@@ -53,11 +54,13 @@ public class Bo_vds_log4jUtil extends DailyRollingFileAppender{
 			log.error(e.getMessage(), e);
 		}
 	}
-
+	
 	@Override
 	public boolean isAsSevereAsThreshold(Priority priority) {
 		// Priority 就是从配置文件中获得的 ，该方法我们不必去调用就能够使用
 		// 只判断是否相等，而不判断优先级
 		return this.getThreshold().equals(priority);
 	}
+
+	
 }

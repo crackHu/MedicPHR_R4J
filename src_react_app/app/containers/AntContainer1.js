@@ -13,18 +13,17 @@ import {
 	Icon
 } from 'antd';
 import QueueAnim from 'rc-queue-anim';
-import fetch from 'isomorphic-fetch'
 import * as ArchiveActions from '../actions/ArchiveActions'
 
 import {
 	msg,
 	notify,
-	getDate
+	getDate,
+	getFieldsObj,
+	getFieldsArr
 } from 'utils'
 import {
-	ARC_TYPE_CONFIG
-} from 'config'
-import {
+	ARC_TYPE_CONFIG,
 	PERSONALDETAIL_FIELDS_CONFIG as FIELDS
 } from 'phr_conf'
 
@@ -41,16 +40,13 @@ const grdaJzs = FIELDS.grdaJzs
 
 class AntContainer1 extends React.Component {
 
-	constructor(props) {
-		super(props);
-
-		this.arcType = ARC_TYPE_CONFIG.arcType
-		this.specArcType = ARC_TYPE_CONFIG.specArcType
-		this.state = {
-			activeKey: this.arcType[0].key,
-			arcType: this.arcType,
-			[`${FIELDS.name}`]: {}
-		}
+	arcType = ARC_TYPE_CONFIG.arcType
+	specArcType = ARC_TYPE_CONFIG.specArcType
+	state = {
+		activeKey: this.arcType[0].key,
+		arcType: this.arcType,
+		[`${FIELDS.name}`]: {},
+		submit: false
 	}
 
 	componentDidMount = () => {
@@ -60,26 +56,42 @@ class AntContainer1 extends React.Component {
 	componentWillUnmount = () => {}
 
 	componentWillUpdate = () => {
-		console.log('componentWillUpdate' + this.state)
+		console.log('AntContainer1.componentWillUpdate')
 	}
 
 	componentDidUpdate = () => {
-		console.log("componentDidUpdate", this.state, this.state[FIELDS.name])
+		console.log("AntContainer1.componentDidUpdate", this.state)
 	}
 
 	/*save archiv*/
 	saveForm = (e) => {
-		this.props.saveArchiveData(grdaJbzl.fields, this.state[FIELDS.name])
+		this.setState({
+			submit: true
+		})
+
+		let obj = getFieldsObj(grdaJbzl.fields, this.state[FIELDS.name])
+		console.log('getFieldsObj', obj)
+		let arr = getFieldsArr(grdaJws.fields, this.state[FIELDS.name])
+		console.log('getFieldsArr', arr)
+
+		this.props.saveArchiveData({
+			grdaJbzl: obj,
+			grdaJws: arr,
+			grdaJzs: []
+		})
 	}
 
 	onFieldsChange = ({
 		fields
 	}) => {
+		console.log('onFieldsChange', fields)
 		let state = {}
-		state[grdaJbzl.name] = Object.assign(this.state[FIELDS.name], {}, {
+		state = Object.assign(this.state[FIELDS.name], {}, {
 			...fields
 		})
-		this.setState(state)
+		this.setState({
+			[`${FIELDS.name}`]: state,
+		})
 	};
 
 	/*Tab Edit event*/
@@ -152,7 +164,7 @@ class AntContainer1 extends React.Component {
 	}
 
 	render() {
-		const operations = <Button type="primary" onClick={this.saveForm}>保存档案</Button>
+		const operations = <Button type="primary" onClick={this.saveForm} loading={this.state.submit}>保存档案</Button>
 		const moreSpecArc = (
 			<Menu>
 			    {
@@ -166,20 +178,32 @@ class AntContainer1 extends React.Component {
 				}
 		  	</Menu>
 		);
-		const moreSpecArcDd = <Dropdown overlay={moreSpecArc} trigger={['click']}>
-							    <a className="ant-dropdown-link" href="#">
+		/*trigger={['click']}*/
+		const moreSpecArcDd = <Dropdown overlay={moreSpecArc}>
+							    <a className="ant-dropdown-link">
 							      添加专档 <Icon type="down" />
 							    </a>
 							  </Dropdown>
 
 		{ /*动态加载档案组件*/ }
-		const tabpane = this.state.arcType.map(pane =>
-			<TabPane tab={pane.name} key={pane.key}>
-				{React.createElement(require(`../modules/phr/components/${pane.content}`).default,{
-					fields: this.state[grdaJbzl.name],
-					onFieldsChange: this.onFieldsChange
-				})}
-			</TabPane>)
+
+		/*{React.createElement(require(`../modules/phr/components/${pane.content}`).default,{
+			fields: this.state[FIELDS.name],
+			onFieldsChange: this.onFieldsChange
+		})}*/
+		const tabpane = this.state.arcType.map(pane => {
+
+			let Container = require(`../modules/phr/components/${pane.content}`).default
+			return (
+				<TabPane tab={pane.name} key={pane.key}>
+					<Container
+						fields={this.state[FIELDS.name]}
+						onFieldsChange={this.onFieldsChange}
+					/>
+				</TabPane>
+			)
+		})
+
 
 		return (
 			<QueueAnim delay={10}>

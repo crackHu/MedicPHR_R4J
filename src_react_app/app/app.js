@@ -12,7 +12,14 @@ import {
 import configureStore from './store/configureStore';
 import Root from './containers/Root';
 
-import './assets/scss/style.scss';
+import {
+	CONFIG
+} from 'login_conf'
+
+const LOGGEDIN = CONFIG.LS.LOGGEDIN
+if (eval(localStorage.getItem(LOGGEDIN))) {
+	require('./assets/scss/style.scss');
+}
 
 const store = configureStore();
 const appHistory = process.env.NODE_ENV === 'production' ? useRouterHistory(createHashHistory)({
@@ -32,8 +39,8 @@ if (module.hot) {
 		const RootContainer = require('./containers/Root').default;
 		ReactDOM.render(
 			<RootContainer
-          store={ store } history={appHistory}
-        />,
+	          store={ store } history={appHistory}
+	        />,
 			app
 		);
 	});

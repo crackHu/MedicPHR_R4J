@@ -115,12 +115,12 @@
 	</bean>
 	
 	<!-- 配置登录文件 -->
-	<bean id="boLogin" class="pd.Bo_Vds_Login">
+	<bean id="boLogin" class="phrs.login.Bo_Vds_Login">
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
 	
 	<!-- 配置个人档案   基本资料 -->
-	<bean id="boPersonDoc" class="pd.Bo_Vds_BoPersonDoc">
+	<bean id="boPersonDoc" class="phrs.phr.Bo_Vds_BoPersonDoc">
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
 	

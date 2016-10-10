@@ -1,7 +1,8 @@
 import {
 	GET_ARCHIVES,
 	SUBMIT_ARCHIVES,
-	SAVE_ARCHIVES
+	SAVE_ARCHIVES,
+	LOGIN
 } from '../constants/ActionTypes'
 import fetch from 'isomorphic-fetch'
 import * as api from '../api'
@@ -36,6 +37,7 @@ export function getArchiveList(pageSize, pageNo) {
 			.then((data) => {
 				let resCode = data.status.resultCode
 				let resMsg = data.status.resultMsg
+
 				if (resCode < 0) {
 					notify('warn', '警告' + '(' + resCode + ')', resMsg);
 					console.warn("Oops, warn", resCode, resMsg)
@@ -52,14 +54,9 @@ export function getArchiveList(pageSize, pageNo) {
 	}
 }
 
-export function saveArchiveData(fields, fields_state) {
+export function saveArchiveData(data, fields_state) {
 
-	/*fields_state_obj.forEach((obj, i) => {
-		console.log("obj||||||||||", obj)
-	})*/
-
-	let data = getFieldsObj(fields, fields_state)
-	console.log("fields_state||||||||||", data)
+	console.log("saveArchiveData data", data)
 	let query = api.saveArchiveData(data)
 	console.log("obj||||||||||", query)
 	fetchInit.body = encodeURI(query)
@@ -72,6 +69,7 @@ export function saveArchiveData(fields, fields_state) {
 				let resCode = data.status.resultCode
 				let resMsg = data.status.resultMsg
 				hide()
+
 				if (resCode < 0) {
 					msg('warn', '警告' + '(' + resCode + ')')
 					console.warn("Oops, warn", resCode, resMsg)

@@ -1,4 +1,4 @@
-package pd;
+package phrs.login;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -56,14 +56,14 @@ public class Bo_Vds_Login extends BoBase{
 				result = call.executeQuery();
 				
 				if(result.next()){
-					response.getDout().getStatus().setResultCode(1);
+					response.getDout().getStatus().setResultCode(0);
 					response.getDout().getStatus().setResultMsg(" 登录成功！ ");
 				}else{
-					response.getDout().getStatus().setResultCode(2);
+					response.getDout().getStatus().setResultCode(-1);
 					response.getDout().getStatus().setResultMsg(" 密码错误！ ");
 				}
 			}else{
-				response.getDout().getStatus().setResultCode(3);
+				response.getDout().getStatus().setResultCode(-2);
 				response.getDout().getStatus().setResultMsg(" 账户错误！ ");
 			}	
 			

@@ -8,44 +8,60 @@ import {
 import {
 	connect
 } from 'react-redux';
+import classNames from 'classnames';
 import {
 	Menu,
 	Icon,
+	Dropdown,
+	Popover,
 	Breadcrumb,
-	message
+	message,
+	Alert,
+	Affix,
+	BackTop
 } from 'antd';
 
 import fetch from 'isomorphic-fetch'
 import * as AppActions from '../actions/AppActions';
 import HeaderNav from './frame/HeaderNav'
 import Sidebar from './frame/Sidebar'
+import UserProfile from './UserProfile'
 
+import {
+	CONFIG
+} from 'login_conf'
 import {
 	shortcut
 } from '../utils/shortcut'
+import moment from 'moment-timezone/moment-timezone';
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
+
+const USR = CONFIG.LS.USR
+const LOGGEDIN = CONFIG.LS.LOGGEDIN
 
 class App extends React.Component {
 
 	constructor() {
-		console.log("constructor")
+		console.log("App.constructor")
 		super()
 		this.state = {
 			/*small screen*/
-			switchSSMode: false
+			switchClass: false
 		}
 	}
 
 	componentWillMount() {
-		console.log("componentWillMount")
+		console.log("App.componentWillMount")
 		if (screen.width <= 1200) {
 			this.setState({
-				switchSSMode: true
+				switchClass: true
 			})
 		}
 	}
 
 	componentDidMount() {
-		console.log("componentDidMount")
+		console.log("App.componentDidMount")
 
 		shortcut.add("ctrl+z", function() {
 			const hide = message.loading('正在保存中...', 110);
@@ -70,44 +86,71 @@ class App extends React.Component {
 			'propagate': true,
 			'target': document
 		});
+
+		window.addEventListener('unload', this.handleUnload);
 	}
+
 	componentWillUpdate() {
-		console.log("componentWillUpdate")
+		console.log("App.componentWillUpdate")
 	}
 
 	componentDidUpdate() {
-		console.log("componentDidUpdate")
+		console.log("App.componentDidUpdate")
 	}
 
 	componentWillReceiveProps() {
-		console.log("componentWillReceiveProps")
+		console.log("App.componentWillReceiveProps")
 	}
 
 	componentWillUnmount() {
-		console.log("componentWillUnmount")
+		console.log("App.componentWillUnmount")
+	}
+
+	handleUnload = () => {
+		localStorage.removeItem(LOGGEDIN)
+		localStorage.removeItem(USR)
 	}
 
 	render() {
-		const SubMenu = Menu.SubMenu;
-		const switchSSMode = this.state.switchSSMode
+
+		var leftClass = classNames({
+			'left': true,
+			'fluid': this.state.switchClass
+		})
+		var mainClass = classNames({
+			'main': true,
+			'fluid': this.state.switchClass
+		})
+		var userClass = classNames({
+			'user-profile': true,
+			'fluid': this.state.switchClass
+		})
+
 		return (
 			<div className="container">
 			  	{/*top*/}
-		        <div className="top">
-		            <div className="logo"/>
-		            <HeaderNav route={this.props.children.props.route}/>
-			    </div>
+			  	<Affix>
+			        <div className="top">
+			            <div className="logo"/>
+			            <HeaderNav route={this.props.children.props.route}/>
+			            {/*user-profile*/}
+			            <div className={userClass}>
+			            	<UserProfile />
+						</div>
+				    </div>
+			    </Affix>
 		        {/*content*/}
 		        <div className="content">
 		        	{/*left*/}
-			        <div className={switchSSMode ? "left-fluid" : "left"}>
+			        <div className={leftClass}>
 			        	<Sidebar route={this.props.children.props.route}/>
 		            </div>
 		            {/*main*/}
-            		<div className={switchSSMode ? "main-fluid" : "main"}>
+            		<div className={mainClass}>
 		          		{this.props.children}
 			        </div>
 		        </div>
+		        <BackTop />
 		    </div>
 		)
 	}

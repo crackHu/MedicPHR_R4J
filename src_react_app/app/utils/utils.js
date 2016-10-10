@@ -40,12 +40,12 @@ export function getDate() {
     return hh + ':' + mm + ':' + ss
   }
   var d = new Date()
-  return d.yyyymmdd()
+  return d.yyyymmdd() + ' ' + d.hhmmss()
 }
 
 // ------ 获取当前时间戳 ------ //
 export function getDateTimestamp() {
-  return new Date().getTime()
+  return Date.now()
 }
 
 export function getIndexOfObjWithKeyVal(array, key, value) {
@@ -90,6 +90,30 @@ export function randomUUID() {
   return s.join('');
 }
 
+// ------ user regards ------ //
+export const regards = () => {
+
+  const hour = new Date().getHours()
+
+  if (hour < 6) {
+    return ("凌晨好！")
+  } else if (hour < 9) {
+    return ("早上好！")
+  } else if (hour < 12) {
+    return ("上午好！")
+  } else if (hour < 14) {
+    return ("中午好！")
+  } else if (hour < 17) {
+    return ("下午好！")
+  } else if (hour < 19) {
+    return ("傍晚好！")
+  } else if (hour < 22) {
+    return ("晚上好！")
+  } else {
+    return ("夜里好！")
+  }
+}
+
 // ------ custom private util ------ //
 import {
   message,
@@ -97,10 +121,11 @@ import {
 } from 'antd'
 
 //http://ant.design/components/message/
-export const notify = (type, msg, desc) => {
+export const notify = (type, msg, desc, duration) => {
   notification[type]({
     message: msg,
     description: desc,
+    duration: duration
   });
 }
 
@@ -134,4 +159,23 @@ export const getFieldsObj = (fields, fields_state) => {
     }
   })
   return obj
+}
+
+// ------ 获取表单字段与值的封装数组 ------ //
+export const getFieldsArr = (fields, fields_state) => {
+  let arr = []
+  fields.forEach((item, i) => {
+    let obj = undefined
+    fields.forEach((name, j) => {
+      let field = fields_state[`${name}_${i}`]
+      if (field) {
+        obj = {}
+        obj[name] = field.value
+      }
+    })
+    if (obj) {
+      arr.push(obj)
+    }
+  })
+  return arr
 }

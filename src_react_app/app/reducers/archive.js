@@ -1,6 +1,7 @@
 import {
 	GET_ARCHIVES,
-	SAVE_ARCHIVES
+	SAVE_ARCHIVES,
+	LOGIN
 } from '../constants/ActionTypes';
 
 const initialState = {

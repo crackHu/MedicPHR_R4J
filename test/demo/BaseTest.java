@@ -9,7 +9,7 @@ import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.test.context.transaction.BeforeTransaction;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:pd/conf/bean_prjX.xml")
+@ContextConfiguration("classpath:phrs/phr/conf/bean_prjX.xml")
 public class BaseTest {
 	@Before
 	public void setUp() throws Exception {

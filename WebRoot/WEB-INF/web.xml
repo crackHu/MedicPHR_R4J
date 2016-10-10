@@ -6,7 +6,7 @@
   </listener>
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>classpath:/pd/conf/bean_prjX.xml</param-value>
+    <param-value>classpath:/phrs/phr/conf/bean_prjX.xml</param-value>
   </context-param>
   <servlet>
     <servlet-name>DownLoadServlet</servlet-name>
@@ -28,4 +28,7 @@
     <servlet-name>UploadServlet</servlet-name>
     <url-pattern>*.action</url-pattern>
   </servlet-mapping>
+ 
+  
+  
 </web-app>

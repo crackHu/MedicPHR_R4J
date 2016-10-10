@@ -12,12 +12,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import ba.util.Bo_vds_log4jUtil;
+import ba.util.Log4jUtil;
 
 import net.sf.json.JSONObject;
 
 public class JsonData {
-	private Bo_vds_log4jUtil log4 = new Bo_vds_log4jUtil();
+	private Log4jUtil log4 = new Log4jUtil();
 
 	/**
 	 * 查询列表数据 ， 返回 一个装有 json格式 的集合
@@ -123,11 +123,14 @@ public class JsonData {
 	/**
 	 *   对 json 数据的处理 并且拼接成输入插入语句
 	 */
-	public String  dealListInsert(String tableName , JSONObject dataIn ){
+	public String  dealListInsert(String tableName , JSONObject dataIn , String grbh ){
 		
 		StringBuffer insert = new StringBuffer("insert into "+tableName+" ( ");
 		StringBuffer values = new StringBuffer("'");
 		Iterator it = dataIn.entrySet().iterator();
+		boolean flag = false;
+		String id = UUID.randomUUID().toString();
+		
 		if( null == it ){
 			log4.log.info(" -=-=-=-=-=-=-=-=-=-=-=-dealListInsert dataIn 是空的 -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + insert + "     " + dataIn);
 			return null;
@@ -140,16 +143,24 @@ public class JsonData {
 					insert.append(key + ",");
 					values.append(value + "','");
 				}
+				
+				if(key.equals("grbh")){
+					flag = true;
+				}
 			}
 			//insert.deleteCharAt(insert.length() - 1);
-			insert.append(" id ) values(");
-			log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-dealListInsert  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + values);
+			if(!flag){
+				insert.append(" id , grbh) values(");
+				values.append(id + "' , '" + grbh + "' ");
+			}else{
+				insert.append(" id ) values(");
+				values.append(id + "' " );
+			}
+			//log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-dealListInsert  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + values);
 			//String val = values.substring(0, values.length() - 2);
-			String id = UUID.randomUUID().toString();
-			values.append(id + "' " );
 			insert.append(values);
 			insert.append(")");
-			log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-dealListInsert  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + insert);
+			//log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-dealListInsert  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + insert);
 		}	
 		log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-dealListInsert  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + insert);		
 		return insert.toString();
@@ -160,7 +171,7 @@ public class JsonData {
 	/**
 	 *   对 json 数据的处理 并且拼接成输入更新 语句
 	 */
-	public String dealListUpdate(String tableName , JSONObject dataIn , String id){
+	public String dealListUpdate(String tableName , JSONObject dataIn , String id ){
 		log4.log.info(" -=-=-=-=-=-=-=-=-=-=-=-dealListUpdate id  -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + id );
 		StringBuffer update = new StringBuffer("update " + tableName + " set ");
 		if(!"".equals(id)){
@@ -182,9 +193,6 @@ public class JsonData {
 				update.append("where id = '" + id + "'");
 				log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-dealListUpdate  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + update);
 			}	
-		}else{
-			//记录不存在， 刚刚加进来的，需要插入。
-			return dealListInsert(tableName , dataIn);
 		}
 		log4.log.info("-=-=-=-=-=-=-=-=-=-=-=-dealListUpdate  不是空的，值是： -=-=-=-=-=-=-=-=-=-=-=-=-=-=   " + update);
 		return update.toString();
